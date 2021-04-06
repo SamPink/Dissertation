@@ -1,0 +1,227 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                                                                           %%
+%%   Dr Varun Ojha                                                           %%
+%%   Lecturer, Department of Computer Science                                %% 
+%%   University of Reading, UK                                               %%
+%%                                                                           %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%     SETTING STARTS - DO NOT CHANGE Unless your Tex setting require so   %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%----------------------------------------------------------------------------------
+% DO NOT Change this is the required setting A4 page, 11pt, onside print, book style
+%%----------------------------------------------------------------------------------
+\documentclass[a4paper,11pt,oneside]{book} 
+
+%%-------------------------------------
+%% Page margin settings - % half inch margin all sides (recommended)
+%%-------------------------------------
+\usepackage[margin=1.2in]{geometry} 
+
+%%-------------------------------------
+%% Font settings - % CM San or Arial (recommended)
+%%-------------------------------------
+% Switch the following two line off: to revert back to defult LaTex font (NOT recomended)
+\usepackage{amsfonts}
+\renewcommand*\familydefault{\sfdefault}
+
+%%-------------------------------------
+%% Math/Defination/Theorem/Algorithm packages settings 
+%%-------------------------------------
+\usepackage[cmex10]{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\newtheorem{mydef}{Definition}
+\newtheorem{mytherm}{Theorem}
+
+%%-------------------------------------
+%% Algorithms/Code Listing environment settings  - 
+%% Please do not change these settings
+%%-------------------------------------
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+\usepackage[utf8]{inputenc}
+\usepackage{listings}
+\usepackage{xcolor}
+\definecolor{codegreen}{rgb}{0,0.6,0.1}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codeblue}{rgb}{0.10,0.00,1.00}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{1.0,1.0,1.0}
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{codeblue},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                        
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2,
+    frame=none
+}
+\lstset{style=mystyle}
+
+%%-------------------------------------
+%% Graphics/Figures environment settings
+%%-------------------------------------
+\usepackage{graphicx}
+\usepackage{subfigure}
+\usepackage{caption}
+\usepackage{lipsum}
+
+%%-------------------------------------
+%% Table environment settings
+%%-------------------------------------
+\usepackage{multirow}
+\usepackage{rotating}
+\usepackage{makecell}
+\usepackage{booktabs}
+%\usepackage{longtable,booktabs}
+
+%%-------------------------------------
+%% List of Abbreviations settings
+%%-------------------------------------
+\usepackage{enumitem}
+\newlist{abbrv}{itemize}{1}
+\setlist[abbrv,1]{label=,labelwidth=1in,align=parleft,itemsep=0.1\baselineskip,leftmargin=!}
+
+%%-------------------------------------
+%% bibliography/Refernces settings   - Harvard Style was used in this report
+%%-------------------------------------
+\usepackage[hidelinks]{hyperref}
+\usepackage[comma,authoryear]{natbib}
+\renewcommand{\bibname}{References} % DO NOT remove or switch of 
+
+%%-------------------------------------
+%% Appendix settings     
+%%-------------------------------------
+\usepackage[toc]{appendix}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%     SETTING ENDS  %%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+    \captionsetup[figure]{margin=1.5cm,font=small,name={Figure},labelsep=colon}
+    \captionsetup[table]{margin=1.5cm,font=small,name={Table},labelsep=colon}
+    \setlipsumdefault{1}
+    
+    \frontmatter
+          
+    \begin{titlepage}      
+        \begin{center}
+            \includegraphics[width=3cm]{figures/uorlogo.png}\\[0.5cm]
+            {\LARGE University of Reading\\[0.5cm]
+                Department of Computer Science}\\[2cm]
+            %{\color{blue} \rule{\textwidth}{1pt}}
+            
+            % -------------------------------
+            % You need to edit some details here
+            % -------------------------------  
+            
+            %------------------------------  TITLE of Your PROJECT ----------------------------------%
+            % chnage the following line
+            \linespread{1.2}\huge {Computer Science Undergraduate Report Template and Report Writing Guide}
+            
+            
+            \linespread{1}~\\[2cm]
+            %{\color{blue} \rule{\textwidth}{1pt}}
+            
+            %------------------------------  Your Name  -------------------------------%
+            % chnage the following line
+            {\Large Firstname(s) Lastname}\\[1cm] 
+            
+            %-------------------------- Your Superviosr's name(s) ---------------------%
+            % chnage the following line
+            {\large \emph{Supervisor:} Supervisor's Name}\\[1cm] % if applicable
+            
+            % PLEASE DO NOT CHANGE THIS TEXT %
+            \large A report submitted in partial fulfilment of the requirements of\\the University of Reading for the degree of\\ Bachelor of Science in \textit{Computer Science}\\[0.3cm] 
+            \vfill
+            
+            
+            \today % Please update this date you can use \date{April 2020} for fixed date
+        \end{center}
+    \end{titlepage}
+
+    % -------------------------------------------------------------------
+    % Declaration
+    % -------------------------------------------------------------------
+    \newpage
+    \thispagestyle{empty}
+    \chapter*{\Large Declaration}
+    % PLEASE CHANGE THIS TEXT EXCEPT YOUR NAME%
+    % -------------------------------
+    % PLEASE ONLY UPDATE HERE -- PLEASE WRITE YOUR NAME %    
+    % ------------------------------- 
+    I, Firstname(s) Lastname, of the Department of Computer Science, University of Reading, confirm that all the sentences, figures, tables, equations, code snippets, artworks, and illustrations in this report are original and have not been taken from any other person's work, except where the works of others have been explicitly acknowledged, quoted, and referenced. I understand that if failing to do so will be considered a case of plagiarism. Plagiarism is a form of academic misconduct and will be penalised accordingly.\\[1cm]
+    
+    
+    \begin{flushright}
+        %------------------------------ PLEASE UPDATE  Your Name  -------------------------------%
+        % change the following line
+        Firstname(s) Lastname % Please change it to your name
+        
+        \today
+    \end{flushright}
+     
+    % -------------------------------------------------------------------
+    % Abstract and Acknowledgement
+    % -------------------------------------------------------------------
+    
+    \input{chapters/abstract.tex}
+    % -------------------------------------------------------------------
+	% Acknowledgement
+	% -------------------------------------------------------------------
+   
+    %\input{chapters/acknowledgments.tex}   
+    
+    % -------------------------------------------------------------------
+    % Contents, list of figures, list of tables
+    % -------------------------------------------------------------------
+    
+    \tableofcontents
+    %\listoffigures
+    %\listoftables
+    
+    % -------------------------------------------------------------------
+    % Main chapters and sections of your Project
+    % Everything from here on your words and works 
+    % -------------------------------------------------------------------
+    \mainmatter
+    % Read for preparation of document in LaTex 
+    % Lamport, L. (1986), LATEX: A Document Preparation System, Addison-Wesley.
+    
+    \input{chapters/introduction.tex}
+    \input{chapters/literature.tex}% https://guides.library.bloomu.edu/litreview
+    \input{chapters/methodology.tex}
+    \input{chapters/results.tex}
+    \input{chapters/discussion.tex}
+    \input{chapters/conclusions.tex}
+    \input{chapters/reflection.tex}
+    
+    % -------------------------------------------------------------------
+    % References  -  Harvard Style was used in this report
+    % -------------------------------------------------------------------
+    \bibliographystyle{agsm} % Harvard Style 
+    
+    \bibliography{references}  %  Patashnik, O. (1988), BibTEXing. Documentation for general BibTEX users.
+    
+    % -------------------------------------------------------------------
+    % Appendices
+    % -------------------------------------------------------------------
+    
+    \begin{appendices}
+        \input{chapters/appendix_A.tex}
+        \input{chapters/appendix_B.tex}
+    \end{appendices}
+    
+\end{document}

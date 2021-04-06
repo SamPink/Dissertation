@@ -1,0 +1,36 @@
+\chapter{Introduction}
+
+...
+\section{Background}
+This problem is going to be looking at renting in the student accommodation industry, specifically on the ability to accurately forecast revenue using the data stored in the property management system (\cite{Jain2006IntellectualPerspective}) by using machine learning to predict under what circumstances a contract will not be fulfilled.\par 
+
+A contract made in advanced between the student (customer) and the company defines the services that will be sold (the room) as well as the start and end date of the tenancy and the fix price the service will be sold at. In the case of student accommodation this contract is usually made a few months in advanced, in some cases before the student has finalized there plan to attend a specific university. Because of this the student withholds the right to cancel the contract before it is paid. The inherit uncertainty of the contract means there is no way for the company to definitively measure what the occupancy and sales of a given property will be in advanced since they have to take on the risk. This problem is not specific to the student accommodation industry, this is a problem of revenue management first identified by the aviation industry in 1966  (\cite{Chiang2007AnResearch})
+
+
+\subsection{Problem Statement}
+\textbf{What is the total proportion of bookings canceled and what is the overall lost revenue from this} 
+On a small scale it would be relatively easy for a human to identify the attributes common with bookings that would then be canceled, for example looking at the percentage of bookings canceled in the previous year. In this case however when the company operates over 70,000 beds across the world it is clear that no amount of human analysis would be able to take into account that many variables. \par
+
+The fact that when a booking is made the student maintains the ability to cancel it up until a given time period for a given penalty means that it is the providers responsibility to account for the inherit uncertainty of the agreement. There's a number of different ways this problem can be solved that should take into account all of the possible variables, usually this is done by simply taking the number of bookings canceled in the previous year then using this number as an average to calculate the number of bookings likely to be canceled in the current year. The problem with this method is that it only takes into account one of the many variables (previous year figures) when in reality the business stores hundreds of data points on each of the bookings made.
+
+It is for this reason I am attempting to solve this problem using machine learning
+
+\textbf{
+\begin{itemize}
+\item  the business and all of the dataset will remain anonymous
+\end{itemize}
+}
+
+
+    
+\section{Aims and objectives}
+The aim is to predict with some degree of certainty which of the bookings made will be cancelled by inputting all data points from all previous bookings that have known outcomes I hope to produce a model that can classify a booking made into 2 distinct states canceled or not canceled.
+
+Understanding why bookings are cancelled
+Building a classification model
+
+The first stage to any machine learning problem is obtaining accurate and clean data, in most cases (including this one) this is the hardest problem to solve as data is not usually stored in a way that makes it easy to read and analyse, most of the time data is stored  then never read again. For this reason I am approaching the problem by building a data warehouse to properly store and analyse the data
+
+
+\section{Solution approach}
+Talk about how I created a data warehouse to more effectively solve the problem of modeling both the current data and having the ability to retrain the model on any new data 

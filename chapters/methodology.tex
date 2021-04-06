@@ -1,0 +1,127 @@
+\chapter{Methodology}
+\label{ch:method}
+...
+
+\section{...}
+To account for the multiple different stages involved in the Data Mining process I am going to be using the CRISP-DM process (\cite{WirthCRISP-DM:Mining}) to break down the problem into 6 specific stages
+
+
+\section{Business Understanding}
+
+The booking data relevant to this problem is stored in an external system, this is the website front facing to the customers where each of the bookings are taken. As a booking is made through the website customer details are stored in the databases this data includes personal information of the customer like name, address, date of birth and phone number. As the customer moves further through the booking process they are then taken to a page asking which university they will be attending and to make a selection of the property they want to rent, here information like location of property, room name, price and extras as stored. when a student then selects a specific room they will be asked about the payment structure they want to use and how they will make there deposit. it is here that all of the relevant cost data is stored. \par
+
+The information stored within these stages of the booking describes all of the intellectual property stored about each specific customer and therefore is what will be used to predict the activity of the customer and weather or not they will cancel there booking. 
+
+In total the dataset contains 45 properties in 5 countries with a large variation in price depending on city and room selection 
+
+
+\section{Data Understanding}
+\textbf{
+\begin{itemize}
+\item include the total size of each property 
+\item include lead time
+\end{itemize}
+}
+
+In the case of a classification problem we can consider any attribute relevant if it influences the target variable. With the common goal in machine learning to obtain as much useful information as possible since [reference good number of data points for machine learning]
+
+In this case I will be looking only at data from this year since the old data is shit. During this booking cycle there are a total of around 16 thousand bookings  in some number of countries 
+
+Do I start with all and run analysis to find what is dependant 
+Or start with a small set and only add things that seem important
+
+\includegraphics[width=10cm]{figures/df_info.png}
+
+
+\begin{itemize}
+    \item property id is the unique identifier for the residence 
+    \item source is the internal system used to create the booking
+    \item room type name is the category of room selected
+    \item tenancy start date is the proposed start date of the contract
+    \item tenancy end date is the proposed end date of the contract
+    \item tenancy length is the duration in day the contract is valid for
+    \item price per night is the daily rate at which the room will be sold
+    \item total price is the total price for the contracted time
+    \item status is the current status of the booking
+    \item status time applied is the time the booking process was started
+    \item status time room selected is the time the customer selected there room
+    \item status time selection completed is the time the customer finalised the selected process 
+    \item status time details completed is the time all personal details are entered
+    \item status time terms accepted is the time the agreement is completed
+    \item device is the type of the device the booking was made on
+    \item created as is the time the process was started
+    \item installment type is the payment schedule
+    \item is rebooker defines if the same customer has applied before
+    \item date of birth of the customer
+    \item gender of the customer
+    \item nationality of the customer
+    \item destination university is the university the customer expects to go to
+    \item year of study is the academic year  the customer is in
+    \item major is the degree type of the student
+    \item communication preference is the customer selected method of communication
+    \item heard source is where the customer discovered the booking
+    \item degree classification is the degree type of the customer
+    \item academic year
+ 
+
+\end{itemize}
+
+ \includegraphics[width=10cm]{figures/price_per_night.png}
+ \includegraphics[width=10cm]{figures/price_per_night_2.png}
+ 
+ looking at the price per night when comparing booking that canceled to ones that didn't we can see that around the middle price range of 40 euro per night is where the most significant number of bookings occur, the figure also shows more cancellations towards the higher end price points.  
+ 
+ \textbf{how will this be used to help the model}
+ 
+  \includegraphics[width=10cm]{figures/canc_per_year.png}
+  
+  This figure shows a weighted proportion of customers canceling bookings in each year of study with the blue horizontal line being the average, we can see that sixth year students are more likely to cancel than any other year possibly because they are more likely to decide to live in private accommodation. the other category are students that didn't fill out the year of study section, this seems to be a good indication or cancellations.
+  
+  \includegraphics[width=10cm]{figures/instalment_type.png}
+  
+  This figure shows a weighted average of cancellations looking at the selected instalment type. instalment type is the payment plan the student selected, we can see that students who selected the fortnightly plan are 10 percent more likely to cancel than the average and students who opted for the customized installment plan are around 6 percent less likely to canceled. this many be a good predictor of cancellations.
+  
+  \includegraphics[width=10cm]{figures/is_rebooker.png}
+  
+  The figure above shows the comparison in cancellations with students who are rebookers (have booked before), we can see that students who have booked previously are around half as likely to cancel there bookings. this is another good predictor of cancellations.  
+  
+
+\section{Data Preparation}
+\textbf{Do I include the data cleaning notebook here}
+
+To get the relevant data for solving this problem I first had to approach the wider problem of developing a robust data warehouse [reference] I started by building a live and dynamic data stream that could take data from an external source and store it in the company data warehouse so I would be able to run new iterations of the model as new data came in. To facilitate the problem of having a dynamic data import stream I used the python object relation mapping library [\textbf{SQLAlchemy - The Database Toolkit for Python}] since it has direct support for the python data library pandas []. Doing this allows me to read data in any supported format [supported formats] and store it in a SQL database with the correct data types. the data I need is stored in an Amazon S3 bucket, so I used the python S3 library Boto3 to read TSV files from blob storage every hour and stored them in the data warehouse. I then deployed this process onto a docker container.
+
+\vspace{5mm}
+
+With all of the necessary data stored in the data warehouse I imported the relevant tables into a Jupiter Notebook to preform the data cleaning stages. My aim is to include only valid bookings that made it the whole way through the booking process and then separate into cancelled or not.
+
+I started by removing any booking in the dataset that didn't have a total price or with a total price less than 1 as this meant the booking was not stored in the system correctly and may have been used for testing as this would affect the final model. 
+
+I then removed any booking that did not get to the terms accepted stage since this could not be treated as a cancellation or a booking as the customer process was not finished.
+
+Using the status time applied column to act as the first point where the booking process was started I created attributes used to store how long the customer took within each stage of the booking process as this may be able to indicate weather or not the user will cancel there booking.  \textbf{find a reference to support this}
+
+\section{Modeling}
+
+I used Azure ML Studio to evaluate and compare multiple diffident algorithms. 
+
+I found that XGboost was the most accurate algorithm when comparing \textbf{some metrics}, because of this I chose to run the XGboost algorithm outside of the Azure ML environment to create a model that can be implemented more efficiently into the CHRISP-DM process
+
+XGBoost is an optimized distributed gradient boosting library designed to be highly efficient, flexible and portable. It implements machine learning algorithms under the Gradient Boosting framework. XGBoost provides a parallel tree boosting (also known as GBDT, GBM) that solve many data science problems in a fast and accurate way. The same code runs on major distributed environment (Hadoop, SGE, MPI) and can solve problems beyond billions of examples. [XGBoost Documentation — XGBoost 1.4.0-SNAPSHOT documentation]
+
+\begin{itemize}
+\item splitting data into num and cat vars 
+\item used SimpleImputer to replace missing num values with mean
+\item train test split of 0.2
+\end{itemize}
+
+			 
+Azure ml
+Azure machine learning studio [What is Azure Machine Learning | Microsoft Docs] is a cloud environment that can be used to both train and deploy machine learning models 
+
+
+\section{Evaluation}
+
+\section{Deployment}
+
+
