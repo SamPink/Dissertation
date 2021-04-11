@@ -1,8 +1,7 @@
 \chapter{Introduction}
 
-...
 \section{Background}
-This paper is going to be looking at renting in the student accommodation industry, specifically on the ability to accurately forecast revenue using the data stored in the property management system (\cite{Jain2006IntellectualPerspective}) by using machine learning to predict under what circumstances a contract will not be fulfilled.
+Looking at renting in the student accommodation industry, specifically on the ability to accurately forecast revenue using the data stored in the property management system (\cite{Jain2006IntellectualPerspective}) by using machine learning to predict under what circumstances a contract will not be fulfilled.
 
 \vspace{5mm}
 
@@ -13,6 +12,8 @@ A contract made in advanced between the student (customer) and the company defin
 
 \begin{itemize}
 \item What is the total proportion of bookings canceled and what is the overall lost revenue from this
+\item total amount of money in bookings
+\item total lost 
 \end{itemize}
 
 
@@ -20,28 +21,32 @@ On a small scale it would be relatively easy for a human to identify the attribu
 
 \vspace{5mm}
 
-The fact that when a booking is made the student maintains the ability to cancel it up until a given time period for a given penalty means that it is the providers responsibility to account for the inherit uncertainty of the agreement. There's a number of different ways this problem can be solved that should take into account all of the possible variables, usually this is done by simply taking the number of bookings canceled in the previous year then using this number as an average to calculate the number of bookings likely to be canceled in the current year. The problem with this method is that it only takes into account one of the many variables (previous year figures) when in reality the business stores hundreds of data points on each of the bookings made.
+\textbf{this paragraph is mostly a repeat of the 2nd paragraph}The fact that when a booking is made the student maintains the ability to cancel it up until a given time period for a given penalty means that it is the providers responsibility to account for the inherit uncertainty of the agreement. There's a number of different ways this problem can be solved that should take into account all of the possible variables, usually this is done by simply taking the number of bookings canceled in the previous year then using this number as an average to calculate the number of bookings likely to be canceled in the current year. The problem with this method is that it only takes into account one of the many variables (previous year figures) when in reality the business stores hundreds of data points on each of the bookings made.
 
 It is for this reason I am attempting to solve this problem using machine learning
 
-\textbf{
+
 \begin{itemize}
 \item  the business and all of the dataset will remain anonymous
-\item total amount of money in bookings
-\item total lost 
 \end{itemize}
-}
-
-
     
 \section{Aims and objectives}
-The aim is to predict with some degree of certainty which of the bookings made will be cancelled by inputting all data points from all previous bookings that have known outcomes I hope to produce a model that can classify a booking made into 2 distinct states canceled or not canceled.
+The aim is to predict with some degree of certainty which of the bookings currently made and any new bookings will be cancelled by inputting all data points from all of the previous years bookings that have known outcomes, I hope to produce a model that can classify a booking made into 2 distinct states canceled or not canceled.
 
-Understanding why bookings are cancelled
-Building a classification model
+\begin{itemize}
+\item Understanding why bookings are cancelled
+\item Building a classification model
+\end{itemize}
 
-The first stage to any machine learning problem is obtaining accurate and clean data, in most cases (including this one) this is the hardest problem to solve as data is not usually stored in a way that makes it easy to read and analyse, most of the time data is stored  then never read again. For this reason I am approaching the problem by building a data warehouse to properly store and analyse the data
+
+The first stage to any machine learning problem is obtaining accurate and clean data, in most cases (including this one) this is the hardest problem to solve as data is not usually stored in a way that makes it easy to read and analyse, most of the time data is stored  then never read used. For this reason I am approaching the problem by building a data warehouse to properly store and analyse the data before building a classification model [\textbf{reference supporting why accurate data is important}] 
 
 
 \section{Solution approach}
-Talk about how I created a data warehouse to more effectively solve the problem of modeling both the current data and having the ability to retrain the model on any new data 
+\begin{itemize}
+\item working with the company to understand what the requirements are, how cancellations predictions will be used, how results will be displayed to employees
+\item why modeling needs to be fast and dynamic 
+\item why building a data warehouse was important to solving the problem, since having the ability to retrain the new model is essential 
+\item CRISP-DM, this is an iterating process of modeling an evaluation of the model
+\item this entire process will be done in the azure cloud using technologies such a Python, Docker and Azure ML Studio 
+\end{itemize}

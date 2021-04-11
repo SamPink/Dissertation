@@ -13,9 +13,22 @@
 
 
 
+\section{What went wrong}
+\begin{itemize}
+\item Focusing on the accuracy of the model not the precision and True True to True False ratio. This meant when looking at how many bookings I correctly predicted as cancelled it was fairly low
+\item This is important because there is not much value in predicting false as this is the expected outcome and when I was looking at the results precision and recall scores included the prediction of False values
+\item Meaning the actual accuracy of the model is actually around 60-70 
+\end{itemize}
 
 
 
+\section{Next Time}
+\begin{itemize}
+\item Splitting the dataset to a country or property level I think would make the results more accurate since many of the similarities and correlations in the data set occur when looking at the data split to each country
+\item include some images to support this 
+\item doing this would require training multiple different models and ensuring and adequate size dataset is available for each property to prevent the data set from over fitting
+\item  feature engineering, are some features not reinvent. remove things that are noise. separate variable for each unique categorical variable 
+\end{itemize}
 
 
 
