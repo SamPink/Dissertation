@@ -8,11 +8,11 @@ To account for the multiple different stages involved in the Data Mining process
 
 \section{Business Understanding}
 
-The booking data relevant to this problem is stored in an external system, this is the website front facing to the customers where each of the bookings are taken. As a booking is made through the website customer details are stored in the external website databases this data includes personal information of the customer like name, address, date of birth and phone number. As the customer moves further through the booking process they are then taken to a page asking which university they will be attending and to make a selection of the property they want to rent, here information like location of property, room name, price and extras as stored. when a student then selects a specific room they will be asked about the payment structure they want to use and how they will make there deposit. it is here that all of the relevant cost data is stored. \par
+The booking data relevant to this problem is stored in an external system, this is the website front facing to the customers where each of the bookings are taken. As a booking is made through the website customer details are stored in the external website databases. This data includes personal information of the customer like name, address, date of birth and phone number. As the customer moves further through the booking process they are then taken to a page asking which university they will be attending and to make a selection of the property they want to rent. Here information like location of property, room name, price and extras are stored. When a student then selects a specific room they will be asked about the payment structure they want to use and how they will make there deposit. It is here that all of the relevant cost data is stored. \par
 
 The information stored within these stages of the booking describes all of the intellectual property stored about each specific customer and therefore is what will be used to predict the activity of the customer and weather or not they will cancel there booking. 
 
-In total the dataset contains 45 properties in 5 countries with a large variation in price depending on city and room selection 
+In total the dataset contains 45 properties in 5 countries with a large variation in price depending on city and room selection.
 
 \begin{itemize}
 \item what happens when a property is at max capacity
@@ -77,11 +77,11 @@ In this case I will be looking only at data from this year \textbf{what year} si
  
   \includegraphics[width=10cm]{figures/canc_per_year.png}
   
-  This figure shows a weighted proportion of customers canceling bookings in each year of study with the blue horizontal line being the average, we can see that sixth year students are more likely to cancel than any other year possibly because they are more likely to decide to live in private accommodation. the other category are students that didn't fill out the year of study section, this seems to be a good indication of cancellations.
+  This figure shows a weighted proportion of customers canceling bookings in each year of study with the blue horizontal line being the average. We can see that sixth year students are more likely to cancel than any other year possibly because they are more likely to decide to live in private accommodation. The other category are students that didn't fill out the year of study section, this seems to be a good indication of cancellations.
   
   \includegraphics[width=10cm]{figures/instalment_type.png}
   
-  This figure shows a weighted average of cancellations looking at the selected instalment type. instalment type is the payment plan the student selected, we can see that students who selected the fortnightly plan are 10 percent more likely to cancel than the average and students who opted for the customized installment plan are around 6 percent less likely to cancel. this may be a good predictor of cancellations.
+  This figure shows a weighted average of cancellations looking at the selected instalment type. Instalment type is the payment plan the student selected, we can see that students who selected the fortnightly plan are 10 percent more likely to cancel than the average and students who opted for the customized installment plan are around 6 percent less likely to cancel. this may be a good predictor of cancellations.
   
   \includegraphics[width=10cm]{figures/is_rebooker.png}
   
@@ -95,13 +95,13 @@ In this case I will be looking only at data from this year \textbf{what year} si
 \end{itemize}
 
 
-To get the relevant data for solving this problem I first had to approach the wider problem of developing a robust data warehouse [reference] I started by building a live and dynamic data stream that could take data from an external source and store it in the company data warehouse so I would be able to run new iterations of the model as new data came in. To facilitate the problem of having a dynamic data import stream I used the python object relation mapping library [\textbf{SQLAlchemy - The Database Toolkit for Python}] since it has direct support for the python data library pandas []. Doing this allows me to read data in any supported format [supported formats] and store it in a SQL database with the correct data types. the data I need is stored in an Amazon S3 bucket, so I used the python S3 library Boto3 to read TSV files from blob storage every hour and stored them in the data warehouse. I then deployed this process onto a docker container.
+To get the relevant data for solving this problem I first had to approach the wider problem of developing a robust data warehouse [reference] I started by building a live and dynamic data stream that could take data from an external source and store it in the company data warehouse so I would be able to run new iterations of the model as new data came in. To facilitate the problem of having a dynamic data import stream I used the python object relation mapping library \cite{SQLAlchemyPython} since it has direct support for the python data library pandas []. Doing this allows me to read data in any supported format [supported formats] and store it in a SQL database with the correct data types. The data I need is stored in an Amazon S3 bucket, so I used the python S3 library Boto3 to read TSV files from blob storage every hour and stored them in the data warehouse. I then deployed this process onto a docker container.
 
 \vspace{5mm}
 
 With all of the necessary data stored in the data warehouse I imported the relevant tables into a Jupiter Notebook to preform the data cleaning stages. My aim is to include only valid bookings that made it the whole way through the booking process and then separate into cancelled or not.
 
-I started by removing any booking in the dataset that didn't have a total price or with a total price less than 1 as this meant the booking was not stored in the system correctly and may have been used for testing as this would affect the final model. 
+I started by removing any booking in the dataset that didn't have a total price or with a total price less than 1 as this meant the booking was not stored in the system correctly and may have been used for testing. 
 
 I then removed any booking that did not get to the terms accepted stage since this could not be treated as a cancellation or a booking as the customer process was not finished.
 
@@ -114,7 +114,7 @@ Using the status time applied column to act as the first point where the booking
 
 \section{Modeling}
 
-I used Azure ML Studio to evaluate and compare multiple diffident algorithms. ML studio is a cloud environment used to train, deploy, automate, manage and track ML models. It can be used for multiple different types of machine learning like supervised or unsupervised and deep learning. It gives the ability to write code in Python, R and its own no-code environment.  I used the cloud Jupiter notebook features for the data cleaning and preparation stages as well as testing models. to evaluate and compare multiple different algorithms I used the Automated ML feature on my cleaned dataset.
+I used Azure ML Studio to evaluate and compare multiple different algorithms. ML studio is a cloud environment used to train, deploy, automate, manage and track ML models. It can be used for multiple different types of machine learning like supervised or unsupervised and deep learning. It gives the ability to write code in Python, R and its own no-code environment.  I used the cloud Jupiter notebook features for the data cleaning and preparation stages as well as testing models. To evaluate and compare multiple different algorithms I used the Automated ML feature on my cleaned dataset.
 
 \begin{itemize}
 \item splitting data into num and cat vars 
