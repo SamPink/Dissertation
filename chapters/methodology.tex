@@ -1,22 +1,27 @@
 \chapter{Methodology}
 \label{ch:method}
-...
-
 \section{...}
-To account for the multiple different stages involved in the Data Mining process I am going to be using the CRISP-DM model (\cite{WirthCRISP-DM:Mining}) to break down the problem into 6 specific stages
+To account for the multiple different stages involved in the Data Mining process I am going to be using the CRISP-DM model (\cite{WirthCRISP-DM:Mining}) to break down the problem into 6 specific stages \textbf{reference the figure}, these stages are business understanding, data understanding, data preparation, modeling, evaluation and deployment in this section I will outline each of the steps involved.
 
 
 \section{Business Understanding}
 
-The booking data relevant to this problem is stored in an external system, this is the website front facing to the customers where each of the bookings are taken. As a booking is made through the website customer details are stored in the external website databases. This data includes personal information of the customer like name, address, date of birth and phone number. As the customer moves further through the booking process they are then taken to a page asking which university they will be attending and to make a selection of the property they want to rent. Here information like location of property, room name, price and extras are stored. When a student then selects a specific room they will be asked about the payment structure they want to use and how they will make there deposit. It is here that all of the relevant cost data is stored. \par
+This sections asks the question of that exactly the business needs and hopes to gain from the process, in this case the business needs to gain a better understanding of which customers are most likely to cancel there bookings. Doing this will help to not only prevent bookings from being cancelled but also to gain a better overall understanding of why bookings are cancelled. 
 
-The information stored within these stages of the booking describes all of the intellectual property stored about each specific customer and therefore is what will be used to predict the activity of the customer and weather or not they will cancel there booking. 
+\begin{figure}[hbt!]
+ %\centering
+ \includegraphics[width=10cm]{figures/bookings_by_property.png}
+ \caption{The X axis shows each of the property Ids with the Y axis showing the total number of bookings made}
+\end{figure}
 
-In total the dataset contains 45 properties in 5 countries with a large variation in price depending on city and room selection.
+In total the dataset contains 45 properties, for the purposes of this task I will be creating a combined model for all properties since there is not an adequate amount of data to create individual models on a property level. I will however be able to show predictions for each property. 
 
 \begin{itemize}
-\item what happens when a property is at max capacity
+\item cost benefit analysis 
+\item potential gain \textbf{take this from intro}
+\item talk about the technologies that will be used
 \end{itemize}
+
 
 
 
@@ -28,12 +33,26 @@ In total the dataset contains 45 properties in 5 countries with a large variatio
 \end{itemize}
 }
 
+\begin{itemize}
+\item explain what a docker container is and how it is deployed in azure 
+\end{itemize}
+
+
+To get the relevant data for solving this problem I first had to approach the wider problem of developing a robust data warehouse [reference] I started by building a live and dynamic data stream that could take data from an external source and store it in the company data warehouse so I would be able to run new iterations of the model as new data came in. To facilitate the problem of having a dynamic data import stream I used the python object relation mapping library \cite{SQLAlchemyPython} since it has direct support for the python data library pandas []. Doing this allows me to read data in any supported format [supported formats] and store it in a SQL database with the correct data types. The data I need is stored in an Amazon S3 bucket, so I used the python S3 library Boto3 to read TSV files from blob storage every hour and stored them in the data warehouse. I then deployed this process onto a docker container.
+
+The booking data relevant to this problem is created in an external system, this is the website front facing to the customers where each of the bookings are taken. As a booking is made through the website customer details are stored in the external website databases. This data includes personal information of the customer like name, address, date of birth and phone number. As the customer moves further through the booking process they are then taken to a page asking which university they will be attending and to make a selection of the property they want to rent. Here information like location of property, room name, price and extras are stored. When a student then selects a specific room they will be asked about the payment structure they want to use and how they will make there deposit. It is here that all of the relevant cost data is stored. \par
+
+The information stored within these stages of the booking describes all of the intellectual property stored about each specific customer and therefore is what will be used to predict the activity of the customer and weather or not they will cancel there booking. 
+
 In the case of a classification problem we can consider any attribute relevant if it influences the target variable. With the common goal in machine learning to obtain as much useful information as possible since [reference good number of data points for machine learning]
 
-In this case I will be looking only at data from this year \textbf{what year} since the old data is incomplete. During this booking cycle there are a total of around 16 thousand bookings  in some number of countries 
+In this case I will be looking only at data from the years 2020 to 2021 since the old data is incomplete. During this booking cycle there are a total of around 16 thousand bookings  in some number of countries 
 
-\includegraphics[width=10cm]{figures/df_info.png}
-
+\begin{figure}[hbt!]
+ %\centering
+ \includegraphics[width=10cm]{figures/df_info.png}
+ \caption{}
+\end{figure}
 
 \begin{itemize}
     \item property id is the unique identifier for the residence 
@@ -90,14 +109,6 @@ In this case I will be looking only at data from this year \textbf{what year} si
 
 \section{Data Preparation}
 
-\begin{itemize}
-\item explain what a docker container is and how it is deployed in azure 
-\end{itemize}
-
-
-To get the relevant data for solving this problem I first had to approach the wider problem of developing a robust data warehouse [reference] I started by building a live and dynamic data stream that could take data from an external source and store it in the company data warehouse so I would be able to run new iterations of the model as new data came in. To facilitate the problem of having a dynamic data import stream I used the python object relation mapping library \cite{SQLAlchemyPython} since it has direct support for the python data library pandas []. Doing this allows me to read data in any supported format [supported formats] and store it in a SQL database with the correct data types. The data I need is stored in an Amazon S3 bucket, so I used the python S3 library Boto3 to read TSV files from blob storage every hour and stored them in the data warehouse. I then deployed this process onto a docker container.
-
-\vspace{5mm}
 
 With all of the necessary data stored in the data warehouse I imported the relevant tables into a Jupiter Notebook to preform the data cleaning stages. My aim is to include only valid bookings that made it the whole way through the booking process and then separate into cancelled or not.
 

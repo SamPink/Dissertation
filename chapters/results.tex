@@ -1,79 +1,31 @@
 \chapter{Results}
 \label{ch:results}
 
-Accuracy of a machine learning model is defined as the number of predictions the model got right, in the case of this classification problem this is predicting the number of booked and cancelled customers. I the case of this prb
 
-
-
-
-
-\begin{itemize}
-\item define accuracy
-\item define AUC
-\item define F1 score
-\item define precision score
-\item accuracy overpowered by the amount of booked, if you just look for the high accuracy because of the biased it shows which is the best at showing who's going to book when i want to see who's not going to book
-\item talk about probably of cancellation
-\end{itemize}
-
+\begin{figure}[hbt!]
+ %\centering
+ \includegraphics[width=15cm]{figures/canc_prob.png}
+ \caption{Predictions made on the test dataset, ranking bookings by percentage chance cancelled. This is what will be added into the booking management system to help understand what bookings will be cancelled}
+\end{figure}
 
 \section{XGboost}
 
+for the section I run the algorithm manually so I could evaluate a comparison of the results between the automated ml model and using the standard XGboost library with no \textbf{hyper parameter tuning or feature stuff}
 
 
 \begin{figure}[hbt!]
  %\centering
- \includegraphics[width=10cm]{figures/azure_ml_confusion_matrix_xg.png}
- \caption{In the field of machine learning and specifically the problem of statistical classification, a confusion matrix, also known as an error matrix, is a specific table layout that allows visualization of the performance of an algorithm, typically a supervised}
+ \includegraphics[width=15cm]{figures/azure_ml_confusion_matrix_xg.png}
+ \caption{The confusion matrix output from the XGBoost algorithm shows a close to 50-50 slit when comparing Actual True with false positive. This shows bad \textbf{recall?}}
 \end{figure}
+
+
+\section{Auto ML}
+
+Here I used Auto ML to evaluate and compare \textbf{some number} of different algorithms looking at the norm macro recall as the target value instead of the accuracy as this reduces false positive rate
 
 \begin{figure}[hbt!]
  %\centering
- \includegraphics[width=10cm]{figures/xg_boost_scores.png}
- \caption{Scores show high values since it is correctly predicting booked and this overpowers the results as booked makes up 75 percent. meaning a accuracy of 75 would be achieved by predicting everything as booked }
+ \includegraphics[width=15cm]{figures/azure_ml_confusion_matrix_xg.png}
+ \caption{The confusion matrix output from the XGBoost algorithm shows a close to 50-50 slit when comparing Actual True with false positive. This shows bad \textbf{recall?}}
 \end{figure}
-
-\begin{itemize}
-\item show the accuracy was better with 83
-\item the confusion matrix shows that it was worse with more false negatives - cases where I predicated they would book buy they cancelled
-\item this was run with no hyperparameter tuning
-\item cross validation was used
-\end{itemize}
-
-
-
-\section{AUTO ML}
-
-\begin{itemize}
-\item this is where I did hyperparmater tuning testing X number of different model iterations 
-\item with a Target value set to norm macro recall \textbf{explain what this is}
-\end{itemize}
-
-
-
-\begin{itemize}
-\item start with confusion matrix
-\item talk about true trues - this is the number of booking cancellations I was able to predict correctly 
-\end{itemize}
-
-\begin{figure}[hbt!]
- %\centering
- \includegraphics[width=10cm]{figures/azure_ml_confusion_matrix.png}
- \caption{In the field of machine learning and specifically the problem of statistical classification, a confusion matrix, also known as an error matrix, is a specific table layout that allows visualization of the performance of an algorithm, typically a supervised}
-\end{figure}
-
-Figure 4.1 shows I was able to predict 2033 True True values with 821 False positives this is a ratio of 0.71 to 0.28
-
-\begin{figure}[hbt!]
- %\centering
- \includegraphics[width=10cm]{figures/azure_ml_roc.png}
- \caption{}
-\end{figure}
-
-\begin{itemize}
-\item talk about the precision
-\item talk about the recall 
-\item talk about the F1 score
-\item for all of these compare expected with actual
-\item how many more values are predicted correctly when comparing the 2 methods
-\end{itemize}
