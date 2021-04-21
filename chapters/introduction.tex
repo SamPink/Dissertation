@@ -45,7 +45,10 @@ To understand what the best way to approach the solution to the problem would be
 \begin{itemize}
 \item explain this better
 \end{itemize}
-To do this I will be using the cross industry standard process for data mining (CRISP-DM)
+
+To account for the multiple different stages involved in the Data Mining process I am going to be using the CRISP-DM model (\cite{WirthCRISP-DM:Mining}) to break down the problem into 6 specific stages \textbf{reference the figure}, these stages are business understanding, data understanding, data preparation, modeling, evaluation and deployment.
+
+According to current research, CRISP-DM is the most commonly used data-mining model due to its numerous advantages, which solved existing data-mining problems. 
 
 
 \vspace{5mm}
@@ -56,7 +59,15 @@ To do this I will be using the cross industry standard process for data mining (
 
 
 
-For this paper I will be creating a single model using the Azure ML studio to find if it is able to make accurate predictions on the data. I am using Azure ML because it provides the functionality to deploy models onto a cloud environment that can be easily integrated into the booking management system through the provided API . It also allows for easier retraining on the model after the evaluation stage while testing a number of different regression models each time and selecting the one with the highest accuracy. For this paper I will only be testing the model first iteration of the model 
+For this paper I will be creating a single model using the Azure ML studio to find if it is able to make accurate predictions on the data. I am using Azure ML because it provides the functionality to deploy models onto a cloud environment that can be easily integrated into the booking management system through the provided API . It also allows for easier retraining on the model after the evaluation stage while testing a number of different regression models each time and selecting the one with the highest accuracy. For this paper I will only be testing the model first iteration of the model.
+
+This model will produce predictions for booking cancellations, in order for the model to be useful, the outcome has to be in a format which is useful to the company and can be acted on. The intended outcome of this research is to have the ability to rank bookings by the probability of them being cancelled, providing a platform to integrate the model results into the companies booking system. Doing this would allow the company to have the ability to input whether or not the prediction was correct. The model would then be able to be retrained based off the outcomes of the predictions, over time allowing for the models accuracy to be increased. 
+
+In order for the solution of this problem to be useful, the solution method has to be fast and dynamic. In the student accommodation industry, there is a need for fast and dynamic modelling to allow for the cancellation prediction to be in a time-frame that allows for actions to be taken to prevent the cancellation. Predicting the cancellation too late would not produce as useful information. Using azure ml can allow for a fast and dynamic method of predicting cancellations. 
+
+One of the problems that needed to be solve was how to get access to get data that is suitable for machine learning. This aspect consistently requires more time as seen in previous literature (\textbf{reference).} To perform machine learning, data needs to be accessible in a suitable format and stored appropriately. The current booking system behind the dataset in this research does not store the data in a way that is suitable for use in machine learning. Building a data warehouse allows for the data to be converted into an appropriate format for machine learning problems. An important aspect involves the ability of the data warehouse to update upon new bookings and allow instant access to the data, a feature of the data warehouse using azure cloud which was used in this project. 
+
+
 
 \begin{itemize}
 \item working with the company to understand what the requirements are, how cancellations predictions will be used, how results will be displayed to employees
