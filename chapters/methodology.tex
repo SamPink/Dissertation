@@ -1,17 +1,12 @@
 \chapter{Methodology}
 \label{ch:method}
-
-\begin{itemize}
-\item explain that the dataset has a 3:1 split of cancelled to not cancelled
-\end{itemize}
-
 \section{...}
-As previously mentioned, I am going to be using the CRISP-DM model (\cite{WirthCRISP-DM:Mining}) to break down the problem into 6 specific stages \textbf{reference the figure}.
+As previously mentioned, I am going to be using the CRISP-DM model (\cite{WirthCRISP-DM:Mining}) to break down the problem into 6 specific stages \textbf{reference the figure from intro} 
 
 
 \section{Business Understanding}
 
-This sections asks the question of what exactly the business needs and hopes to gain from the process, in this case the business needs to gain a better understanding of which customers are most likely to cancel there bookings. Doing this will help to not only prevent bookings from being cancelled but also to gain a better overall understanding of why bookings are cancelled. 
+This sections asks the question of what exactly the business needs and hopes to gain from the process, in this case the business needs to gain a better understanding of which customers are most likely to cancel there bookings. Doing this will help to not only prevent bookings from being cancelled but also to gain a better overall understanding of why bookings are cancelled. It is also important form a machine learning and a business perspective to understand why bookings are being cancelled through the process of feature and model explanation as this will help to understand what the best actions are that can be taken to prevent cancellations.
 
 \begin{figure}[hbt!]
  %\centering
@@ -19,11 +14,9 @@ This sections asks the question of what exactly the business needs and hopes to 
  \caption{The X axis shows each of the property Ids with the Y axis showing the total number of bookings made}
 \end{figure}
 
-It is also important form a machine learning and a business perspective to understand why bookings are being cancelled through the process of feature and model explanation as this will help to understand what the best actions are that can be taken to prevent cancellations.
 
-In total the dataset contains 45 properties, that vary significantly in the number of students at each of them \textbf{as shown in figure 1} because of this large variation I think it will be best to understand cancellations at the global level, the risk involved with this is that the model will not pickup some of the discrepancies between  the individual properties. 
 
-\textbf{for the purposes of this task I will be creating a combined model for all properties since there is not an adequate amount of data to create individual models on a property level. I will however be able to show predictions for each property. }
+In total the dataset contains 45 properties, that vary significantly in the number of students at each of them \textbf{as shown in figure 1} because of this large variation I think it will be best to understand cancellations at the global level with one model being trained on data from all properties. Doing this helps to prevent model over fitting as with a relatively small number of data points on some of the properties it would be difficult to create an accurate model. The risk involved with this is that the model will not pickup some of the discrepancies between the individual properties. 
 
 \begin{itemize}
 \item Determine data mining goals - Understanding the dataset in question in essential to being able to properly evaluate and understand its results - \textbf{explain this better}
@@ -34,33 +27,23 @@ In total the dataset contains 45 properties, that vary significantly in the numb
 
 
 \section{Data Understanding}
-\textbf{
-\begin{itemize}
-\item include the total size of each property 
-\item include lead time
-\end{itemize}
-}
 
-\begin{itemize}
-\item explain what a docker container is and how it is deployed in azure 
-\end{itemize}
+To get the relevant data for solving this problem I first had to approach the wider problem of developing a robust data warehouse [\textbf{reference}] I started by building a dynamic data stream that could take data from an external source and store it in the company data warehouse so I would be able to run new iterations of the model as new data came in. To facilitate the problem of having a dynamic data import stream I used the python object relation mapping library \cite{SQLAlchemyPython} since it has direct support for the python data library pandas \textbf{reference?}. Doing this allows me to read data in any supported format [supported formats] and store it in a SQL database with the correct data types. The data I need is stored in an Amazon S3 bucket, so I used the python S3 library Boto3 to read TSV files from blob storage every hour and stored them in the data warehouse. I then deployed this process onto a docker container using the Azure cloud tool called Container Instances that enables docker containers to run as scheduled tasks. Docker containers are standardised units of software that contain all of the dependencies for running a specific program or script in a single executable package which can be run in the cloud or on a local machine.
 
+The booking data relevant to this problem is created in an external system, this is the website front facing to the customers where each of the bookings are taken. As a booking is made through the website customer details are stored in the external website databases. This data includes personal information of the customer like name, address, date of birth and phone number. As the customer moves further through the booking process they are then taken to a page asking which university they will be attending and to make a selection of the property they want to rent. Here information like location of property, room name, price and extras are stored. When a student then selects a specific room they will be asked about the payment structure they want to use and how they will make there deposit. It is here that all of the relevant cost data is stored. In some cases the fields for data entry are not mandatory in the booking system meaning that the data will not be stored, in these cases the value of the attribute is replaced with other.
 
-To get the relevant data for solving this problem I first had to approach the wider problem of developing a robust data warehouse [reference] I started by building a live and dynamic data stream that could take data from an external source and store it in the company data warehouse so I would be able to run new iterations of the model as new data came in. To facilitate the problem of having a dynamic data import stream I used the python object relation mapping library \cite{SQLAlchemyPython} since it has direct support for the python data library pandas []. Doing this allows me to read data in any supported format [supported formats] and store it in a SQL database with the correct data types. The data I need is stored in an Amazon S3 bucket, so I used the python S3 library Boto3 to read TSV files from blob storage every hour and stored them in the data warehouse. I then deployed this process onto a docker container.
+\vspace{5mm}
 
-The booking data relevant to this problem is created in an external system, this is the website front facing to the customers where each of the bookings are taken. As a booking is made through the website customer details are stored in the external website databases. This data includes personal information of the customer like name, address, date of birth and phone number. As the customer moves further through the booking process they are then taken to a page asking which university they will be attending and to make a selection of the property they want to rent. Here information like location of property, room name, price and extras are stored. When a student then selects a specific room they will be asked about the payment structure they want to use and how they will make there deposit. It is here that all of the relevant cost data is stored. \par
+The information stored within these stages of the booking describes all of the intellectual property stored about each specific customer and therefore is what will be used to predict the activity of the customer and weather or not they will cancel there booking. In the case of a classification problem we can consider any attribute relevant if it influences the target variable. With the common goal in machine learning to obtain as much useful information as possible since \textbf{[reference good number of data points for machine learning]}
 
-The information stored within these stages of the booking describes all of the intellectual property stored about each specific customer and therefore is what will be used to predict the activity of the customer and weather or not they will cancel there booking. 
-
-In the case of a classification problem we can consider any attribute relevant if it influences the target variable. With the common goal in machine learning to obtain as much useful information as possible since [reference good number of data points for machine learning]
-
-In this case I will be looking only at data from the years 2020 to 2021 since the old data is incomplete. During this booking cycle there are a total of around 16 thousand bookings  in some number of countries 
+In this case I will be looking only at data from the years 2020 to 2021 since the old data is incomplete. During this booking cycle there are a total of around 14363 thousand bookings.
 
 \begin{figure}[hbt!]
  %\centering
  \includegraphics[width=10cm]{figures/df_info.png}
- \caption{}
+ \caption{Shows all of the attributes in the dataset}
 \end{figure}
+
 
 \begin{itemize}
     \item property id is the unique identifier for the residence 
@@ -95,29 +78,46 @@ In this case I will be looking only at data from the years 2020 to 2021 since th
 
 \end{itemize}
 
+ \begin{figure}[hbt!]
+ %\centering
  \includegraphics[width=10cm]{figures/price_per_night.png}
- \includegraphics[width=10cm]{figures/price_per_night_2.png}
+ \caption{Distribution of price per night comparing cancelled and non cancelled bookings}
+\end{figure}
  
- looking at the price per night when comparing booking that canceled to ones that didn't we can see that around the middle price range of 40 euro per night is where the most significant number of bookings occur, the figure also shows more cancellations towards the higher end price points.  
  
- \textbf{how will this be used to help the model}
+ Comparing price per night when looking at bookings that canceled to ones that didn't we can see that around the middle price range of £40 per night is where the most significant number of booking cancellations occur, with most of the non canceled bookings in the £20 per night price range. This difference in price distribution when comparing cancelled to non cancelled bookings suggests price per night is an important feature for classification. 
  
-  \includegraphics[width=10cm]{figures/canc_per_year.png}
+ \begin{figure}[hbt!]
+ %\centering
+\includegraphics[width=10cm]{figures/canc_per_year.png}
+ \caption{Normalized percentage of booking cancellation for degree year of study with blue horizontal line being the average}
+\end{figure}
+ 
   
-  This figure shows a weighted proportion of customers canceling bookings in each year of study with the blue horizontal line being the average. We can see that sixth year students are more likely to cancel than any other year possibly because they are more likely to decide to live in private accommodation. The other category are students that didn't fill out the year of study section, this seems to be a good indication of cancellations.
+Sixth year students are more likely to cancel than any other year, possibly because they are more likely to decide to live in private accommodation but it is unlikely this accounts for them being almost twice as likely to cancel than the average. The Other category is also an outlier here with an almost 40 percent chance of cancelling, more research would be needed to understand exactly why customers who don't enter a year of study are more likely to cancel but it is clear from this figure that year of study will be a good indicator of cancellations.
   
-  \includegraphics[width=10cm]{figures/instalment_type.png}
+  \begin{figure}[hbt!]
+ %\centering
+\includegraphics[width=10cm]{figures/instalment_type.png}
+ \caption{Normalized percentage of booking cancellation for payment installment type}
+\end{figure}
   
-  This figure shows a weighted average of cancellations looking at the selected instalment type. Instalment type is the payment plan the student selected, we can see that students who selected the fortnightly plan are 10 percent more likely to cancel than the average and students who opted for the customized installment plan are around 6 percent less likely to cancel. this may be a good predictor of cancellations.
   
-  \includegraphics[width=10cm]{figures/is_rebooker.png}
+  Weighted average of cancellations looking at the selected instalment type. Instalment type is the payment plan the student selected, we can see that students who selected the fortnightly plan are 10 percent more likely to cancel than the average and students who opted for the customized installment plan are around 6 percent less likely to cancel. this may be a good predictor of cancellations.
   
-  The figure above shows the comparison in cancellations with students who are rebookers (have booked before), we can see that students who have booked previously are around half as likely to cancel there bookings. this is another good predictor of cancellations.  
+  
+   \begin{figure}[hbt!]
+ %\centering
+\includegraphics[width=10cm]{figures/is_rebooker.png}
+ \caption{Normalized percentage of booking cancellation for rebooker}
+\end{figure}
+  
+ Comparison in cancellations with students who are rebookers (have booked before), we can see that students who have booked previously are around half as likely to cancel there bookings. this is another good predictor of cancellations.  
   
 
 \section{Data Preparation}
 
-The dataset I have selected to be used for this research is a combination of 3 different tables from the external booking system, these include the booking table, student table and academic year id table. All of these tables have been combined using the data warehouse to create the DataFrame shown in \textbf{figure something}. Many of the columns from the original dataset have been taken out this stage as I did not believe they would provide any value in terms of the prediction. Using a dataset with too many columns has to potential to results in over fitting and noise in the model, it is possible that the dataset I have selected can be reduced to a smaller number of features but I believe I have selected the best dataset available to me for completing this research. 
+The dataset I have selected to be used for this research is a combination of 3 different tables from the external booking system, these include the booking table, student table and academic year id table. All of these tables have been combined using the data warehouse to create the DataFrame shown in \textbf{figure 3.7}. Many of the columns from the original dataset have been taken out this stage as I did not believe they would provide any value in terms of the prediction. Using a dataset with too many columns has to potential to result in over fitting and noise in the model, it is possible that the dataset I have selected can be reduced to a smaller number of features but I believe I have selected the best dataset available to me for completing this research. 
 
 \begin{figure}[hbt!]
  %\centering
@@ -125,7 +125,7 @@ The dataset I have selected to be used for this research is a combination of 3 d
  \caption{Section of Jupiter Notebook for data cleaning where I joined 3 sql tables into 1 dataframe using there respective id's}
 \end{figure}
 
-With all of the necessary data stored in the data warehouse I imported the relevant tables into a Jupiter Notebook to preform the data cleaning stages. My aim is to include only valid bookings that made it the whole way through the booking process and then separate into cancelled or not. I started by removing any booking in the dataset that didn't have a total price or with a total price less than 1 as this meant the booking was not stored in the system correctly and may have been used for testing. I then removed any booking that did not get to the terms accepted stage since this could not be treated as a cancellation or a booking as the customer process was not finished.
+With all of the necessary data stored in the data warehouse I imported the relevant tables into a Jupiter Notebook to perform the data cleaning stages. My aim is to include only valid bookings that made it the whole way through the booking process and then separate into cancelled or not. I started by removing any booking in the dataset that didn't have a total price or with a total price less than 1 as this meant the booking was not stored in the system correctly and may have been used for testing. I then removed any booking that did not get to the terms accepted stage since this could not be treated as a cancellation or a booking as the customer process was not finished.
 
 \begin{figure}[hbt!]
  %\centering
@@ -139,9 +139,9 @@ To account for the missing values in some of the categorical columns I use the p
 
 \section{Modeling}
 
-I used Azure ML Studio to evaluate and compare multiple different algorithms. ML studio is a cloud environment used to train, deploy, automate, manage and track ML models. It can be used for multiple different types of machine learning like supervised or unsupervised and deep learning. It gives the ability to write code in Python, R and its own no-code environment.  I used the cloud Jupiter notebook features for the data cleaning and preparation stages as well as testing models. To evaluate and compare multiple different algorithms I used the Automated ML through its Python API on my cleaned dataset. Doing this meant I was able to test a large variation of regression algorithms.
+I used Azure ML Studio to evaluate and compare multiple different algorithms. ML studio is a cloud environment used to train, deploy, automate, manage and track ML models. It can be used for multiple different types of machine learning like supervised or unsupervised and deep learning. It gives the ability to write code in Python, R and its own no-code environment.  I used the cloud Jupiter notebook features for the data cleaning and preparation stages as well as testing models. To evaluate and compare multiple different algorithms I used Automated ML through its Python SDK on my cleaned dataset. Doing this meant I was able to test a large variation of regression algorithms.
 
-I used a train test split of 20 percent test size with the sklearn.model_selection library. why did I used 20 percent
+I used a train test split of 20 percent test size with the sklearn model selection library. why did I used 20 percent
 
 \begin{figure}[hbt!]
  %\centering
@@ -151,39 +151,22 @@ I used a train test split of 20 percent test size with the sklearn.model_selecti
 
 Running the algorithm is setup using the AutoMLConfig class in the Azure ML python SDK, the object contains all of the parameters used for configuring the experiment run. for a classification algorithm the task attribute is set to classification along with passing the training data and the target column label. Setting the number of cross validations to 15 means AutoML will run 15 different classifications on the training data outputting the results of each iteration. This output is then ranked by the selected primary metric which I have selected as norm macro recall, AzureML optimises models selected based on the primary metric. 
 
-Using the featurization auto setting allows Azure ML to automatically detect the column types and apply the optimal data preprocess techniques, for categorical data the One Hot encoding technique is applied to create a new variable for each stage of the categorical attribute represented as binary. The process of featurization is able to detect columns with high cardinality.  High cardinality means a attribute contains a large number of unique values, this was true for columns destination university, major and nationality this is an expected result as the dataset contains students from a large variety of university's and nationalities. The problem with this is when applying the One Hot encoding technique since each unique value increases the dimensionality of the feature matrix 
+Using the featurization auto setting allows Azure ML to automatically detect the column types and apply the optimal data preprocess techniques, for categorical data the One Hot encoding technique is applied to create a new variable for each stage of the categorical attribute represented as binary. The process of featurization is able to detect columns with high cardinality.  High cardinality means a attribute contains a large number of unique values, this was true for columns destination university, major and nationality this is an expected result as the dataset contains students from a large variety of university's and nationalities. The problem with this is when applying the One Hot encoding technique each unique value increases the dimensionality of the feature matrix having the potential to result in model over fitting.
 
-After the config is setup it can be passed to the Experiment.submit class, In this case I used the local run configuration so the cloud resources were not consumed running many iterations of the classification model. As each model is generated its results are outputted to the screen
-
-Throughout the modeling process I tested a number of different settings configurations   
-
-
-\begin{itemize}
-\item generate test design
-\item build model 
-\item assess model
-\end{itemize}
-
-
-
-\begin{itemize}
-\item used SimpleImputer to replace missing num values with mean
-\item train test split of 0.2
-\item Azure ml - Azure machine learning studio [What is Azure Machine Learning | Microsoft Docs] is a cloud environment that can be used to both train and deploy machine learning models 
-\item add some images of the azure ml stages
-\item Azure Machine Learning SDK for Python
-\item talk about how I run the results in python myself
-\end{itemize}
-
-
-
-
-\begin{itemize}
-\item evaluation and deployment seem like part of the results
-\end{itemize}
+After the configuration is setup it can be passed to the Experiment.submit class, In this case I used the local run configuration so the cloud resources were not consumed running many iterations of the classification model. As each model is generated its results are outputted to the screen
 
 \section{Evaluation}
 
+\begin{itemize}
+\item give a brief intro of evaluating the results
+\end{itemize}
+
+
 \section{Deployment}
+
+\begin{itemize}
+\item intro of how this will be deployed using azure
+\end{itemize}
+
 
 

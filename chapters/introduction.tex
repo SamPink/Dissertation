@@ -7,6 +7,11 @@ Looking at renting in the student accommodation industry, specifically on the ab
 
 A contract made in advanced between the student (customer) and the company defines the services that will be sold (the room) as well as the start and end date of the tenancy and the fix price the service will be sold at. In the case of student accommodation this contract is usually made a few months in advanced, in some cases before the student has finalized there plan to attend a specific university. Because of this the student withholds the right to cancel the contract before it is paid. The inherit uncertainty of the contract means there is no way for the company to definitively measure what the occupancy and sales of a given property will be in advanced since they have to take on the risk. This problem is not specific to the student accommodation industry, this is a problem of revenue management first identified by the aviation industry in 1966  (\cite{Chiang2007AnResearch})
 
+\vspace{5mm}
+
+
+Having the ability to predict with some degree of certainty whether or not a booking is going to be cancelled would allow for more accurate decisions about revenue management to be made and overcome some of the risk created with contract based booking system. Doing this using machine learning means that overtime the accuracy of the predictions can increase with better understanding of the data, new iterations of modelling and evaluation of the actual outcome when compared with the predicted outcome. The ability for machine learning algorithm to make accurate predictions on a given outcome depends on the data available to it the amount of the data and the accuracy and usability of the data in, the case of booking management a lot of data is stored about each booking made. Meaning that it should be possible with the correct classification techniques to make accurate predictions on the outcome of the booking
+
 
 \subsection{Problem Statement}
 
@@ -25,26 +30,25 @@ It is for this reason I am attempting to solve this problem using machine learni
 Since the dataset I am using is coming directly from the company in question and contains real data about students I have taken out all personal information I will be referring to students and properties only by there ID so that the company and students remain anonymous. 
     
 \section{Aims and objectives}
-The aim is to predict with some degree of certainty which of the bookings currently made and any new bookings will be cancelled by inputting all data points from all of the previous years bookings that have known outcomes, I hope to produce a model that can classify a booking made into 2 distinct states, cancelled or not cancelled.
+The aim is to predict with some degree of certainty which of the bookings currently made and any new bookings will be cancelled by inputting all data points from the previous years bookings, I hope to produce a model that can classify a booking made into 2 distinct states, cancelled or not cancelled.
 
 It is important to not just create a model that will predict which bookings will be cancelled but also to understand why bookings are cancelled by using the model to identify which features in the dataset have the most affect on weather or not the customer will cancel. Doing this is important in helping the company to make business decisions on the data to not only prevent the cancellation from occurring but to understand what actions can be taken that will reduce the number of cancellations made in the future.  
 
 The first stage to any machine learning problem is obtaining accurate and clean data, in most cases (including this one), this is the hardest problem to solve as data is not usually stored in a way that makes it easy to read and analyse, most of the time data is stored  then never used. For this reason I am approaching the problem by building a data warehouse to properly store and analyse the data before building a classification model [\textbf{reference supporting why accurate data is important}]. This data warehouse will exist in the Azure cloud on top of Docker Containers with the code written in python, with the aim being to create a stream to import new booking data into the data warehouse hourly ensuring that it is stored in a way that makes it easy to use for model training
 
-The aim is to integrate the classification model into the booking management system by creating a daily list of which customers are most likely to cancel there bookings to the managers of there respective properties along with the recommended actions to be taken to prevent the cancellation. Storing the data of the actions taken and weather or not it was successful will then be used to improve future iterations of the model
+The aim is to integrate the classification model into the booking management system by creating a daily list of which customers are most likely to cancel there bookings to the managers of there respective properties along with the recommended actions to be taken to prevent the cancellation. Storing the data of the actions taken and weather or not it was successful can then be used to improve future iterations of the model
 
-\begin{itemize}
-\item maybe create an image of how this would look
-\end{itemize}
 
 
 
 \section{Solution approach}
 
-To understand what the best way to approach the solution to the problem would be I started by working with employees in the company to gain a better understanding of what kind of results would be most effective and what are the actions that can be take to have the best chance of preventing a cancellation from being made at the level of an individual booking. It is important the results can be displayed in a way that is easy for employees to understand so that actions can be taken easily. I found that the best way to display the results of the model would be to create a table that ranked bookings by highest probability of cancellation. Another feature I found to be important is the ability to retrain the model on new data and adjust the hyper tuning parameters.
 \begin{itemize}
-\item explain this better
+\item talk about the split of data in the training set, 75 percent of the training data contains bookings that are not cancelled and 25 percent cancelled 
 \end{itemize}
+
+
+To understand what the best way to approach the solution to the problem would be I started by working with employees in the company to gain a better understanding of what kind of results would be most effective and what are the actions that can be take to have the best chance of preventing a cancellation from being made at the level of an individual booking. It is important the results can be displayed in a way that is easy for employees to understand so that actions can be taken. I found that the best way to display the results of the model would be to create a table that ranked bookings by highest probability of cancellation. Another feature I found to be important is the ability to retrain the model on new data and adjust the hyper tuning parameters.
 
 To account for the multiple different stages involved in the Data Mining process I am going to be using the CRISP-DM model (\cite{WirthCRISP-DM:Mining}) to break down the problem into 6 specific stages \textbf{reference the figure}, these stages are business understanding, data understanding, data preparation, modeling, evaluation and deployment.
 
@@ -59,20 +63,16 @@ According to current research, CRISP-DM is the most commonly used data-mining mo
 
 
 
-For this paper I will be creating a single model using the Azure ML studio to find if it is able to make accurate predictions on the data. I am using Azure ML because it provides the functionality to deploy models onto a cloud environment that can be easily integrated into the booking management system through the provided API . It also allows for easier retraining on the model after the evaluation stage while testing a number of different regression models each time and selecting the one with the highest accuracy. For this paper I will only be testing the model first iteration of the model.
+I will be creating a model using the Azure ML studio to find if it is able to make accurate predictions on the data. I am using Azure ML because it provides the functionality to deploy models onto a cloud environment and significantly speeds up the process of model development . It also allows for easier retraining on the model after the evaluation stage while testing a number of different regression models each time and selecting the one with the highest accuracy.
 
-This model will produce predictions for booking cancellations, in order for the model to be useful, the outcome has to be in a format which is useful to the company and can be acted on. The intended outcome of this research is to have the ability to rank bookings by the probability of them being cancelled, providing a platform to integrate the model results into the companies booking system. Doing this would allow the company to have the ability to input whether or not the prediction was correct. The model would then be able to be retrained based off the outcomes of the predictions, over time allowing for the models accuracy to be increased. 
+The intended outcome of this research is to have the ability to rank bookings by the probability of them being cancelled, providing a platform to integrate the model results into the companies booking system. Doing this would allow the company to have the ability to input whether or not the prediction was correct. The model would then be able to be retrained based off the outcomes of the predictions, over time allowing for the models accuracy to be increased. 
 
-In order for the solution of this problem to be useful, the solution method has to be fast and dynamic. In the student accommodation industry, there is a need for fast and dynamic modelling to allow for the cancellation prediction to be in a time-frame that allows for actions to be taken to prevent the cancellation. Predicting the cancellation too late would not produce as useful information. Using azure ml can allow for a fast and dynamic method of predicting cancellations. 
+In order for the solution of this problem to be useful, the solution method has to be fast and dynamic. Cancellation prediction needs to be in a time-frame that allows for actions to be taken to prevent the cancellation. Predicting the cancellation too late would not produce as useful information. Using azure ml can allow for a fast and dynamic method of predicting cancellations. 
 
-One of the problems that needed to be solve was how to get access to get data that is suitable for machine learning. This aspect consistently requires more time as seen in previous literature (\textbf{reference).} To perform machine learning, data needs to be accessible in a suitable format and stored appropriately. The current booking system behind the dataset in this research does not store the data in a way that is suitable for use in machine learning. Building a data warehouse allows for the data to be converted into an appropriate format for machine learning problems. An important aspect involves the ability of the data warehouse to update upon new bookings and allow instant access to the data, a feature of the data warehouse using azure cloud which was used in this project. 
+One of the problems that needed to be solve was how to get access to data that is suitable for machine learning. This aspect consistently requires more time as seen in previous literature (\textbf{reference).} To perform machine learning, data needs to be accessible in a suitable format and stored appropriately. The current booking system behind the dataset in this research does not store the data in a way that is suitable for use in machine learning. Building a data warehouse allows for the data to be converted into an appropriate format for machine learning problems. An important aspect involves the ability of the data warehouse to update upon new bookings and allow instant access to the data, a feature of the data warehouse using azure cloud which was used in this project. 
 
-
+The main technology used throughout the process will be Azure ML studio as a framework to encapsulate all of the tools needed to complete a machine learning project, it allows for direct connection to the database for accessing the data through integrated Jupiter Notebooks. Use of Jupiter Notebooks in Python provides an environment for all of the data cleaning and preparation stages that need to be performed entirely within the azure cloud. The modeling stages are done in the same way by importing the AzureML Python SDK into the Jupiter Notebook. The Experiment class (azureml.core.experiment.Experiment) in the SDK is used to store and run the models within a logical resource group with the ability to add and remove different modeling iterations form the experiment as well as viewing the results, when a model is configured through AutoMLConfig (azureml.train.automl.automlconfig.AutoMLConfig) it is then added to the experiment and the run is executed in the cloud. 
 
 \begin{itemize}
-\item working with the company to understand what the requirements are, how cancellations predictions will be used, how results will be displayed to employees
-\item why modeling needs to be fast and dynamic 
-\item why building a data warehouse was important to solving the problem, since having the ability to retrain the new model is essential 
-\item CRISP-DM, this is an iterating process of modeling an evaluation of the model
-\item this entire process will be done in the azure cloud using technologies such a Python, Docker and Azure ML Studio 
+\item Doing this process in the cloud helps to solve the the GDPR related problem of data access as the data is never stored on the local computer 
 \end{itemize}
