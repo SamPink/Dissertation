@@ -11,7 +11,7 @@ As previously mentioned, I am going to be using the CRISP-DM model (\cite{WirthC
 
 \section{Business Understanding}
 
-This sections asks the question of that exactly the business needs and hopes to gain from the process, in this case the business needs to gain a better understanding of which customers are most likely to cancel there bookings. Doing this will help to not only prevent bookings from being cancelled but also to gain a better overall understanding of why bookings are cancelled. 
+This sections asks the question of what exactly the business needs and hopes to gain from the process, in this case the business needs to gain a better understanding of which customers are most likely to cancel there bookings. Doing this will help to not only prevent bookings from being cancelled but also to gain a better overall understanding of why bookings are cancelled. 
 
 \begin{figure}[hbt!]
  %\centering
@@ -19,13 +19,16 @@ This sections asks the question of that exactly the business needs and hopes to 
  \caption{The X axis shows each of the property Ids with the Y axis showing the total number of bookings made}
 \end{figure}
 
-In total the dataset contains 45 properties, for the purposes of this task I will be creating a combined model for all properties since there is not an adequate amount of data to create individual models on a property level. I will however be able to show predictions for each property. 
+It is also important form a machine learning and a business perspective to understand why bookings are being cancelled through the process of feature and model explanation as this will help to understand what the best actions are that can be taken to prevent cancellations.
+
+In total the dataset contains 45 properties, that vary significantly in the number of students at each of them \textbf{as shown in figure 1} because of this large variation I think it will be best to understand cancellations at the global level, the risk involved with this is that the model will not pickup some of the discrepancies between  the individual properties. 
+
+\textbf{for the purposes of this task I will be creating a combined model for all properties since there is not an adequate amount of data to create individual models on a property level. I will however be able to show predictions for each property. }
 
 \begin{itemize}
-\item cost benefit analysis 
-\item potential gain \textbf{take this from intro}
-\item talk about the technologies that will be used
+\item Determine data mining goals - Understanding the dataset in question in essential to being able to properly evaluate and understand its results - \textbf{explain this better}
 \end{itemize}
+
 
 
 
@@ -114,26 +117,56 @@ In this case I will be looking only at data from the years 2020 to 2021 since th
 
 \section{Data Preparation}
 
+The dataset I have selected to be used for this research is a combination of 3 different tables from the external booking system, these include the booking table, student table and academic year id table. All of these tables have been combined using the data warehouse to create the DataFrame shown in \textbf{figure something}. Many of the columns from the original dataset have been taken out this stage as I did not believe they would provide any value in terms of the prediction. Using a dataset with too many columns has to potential to results in over fitting and noise in the model, it is possible that the dataset I have selected can be reduced to a smaller number of features but I believe I have selected the best dataset available to me for completing this research. 
 
-With all of the necessary data stored in the data warehouse I imported the relevant tables into a Jupiter Notebook to preform the data cleaning stages. My aim is to include only valid bookings that made it the whole way through the booking process and then separate into cancelled or not.
+\begin{figure}[hbt!]
+ %\centering
+ \includegraphics[width=10cm]{figures/joining_tables.png}
+ \caption{Section of Jupiter Notebook for data cleaning where I joined 3 sql tables into 1 dataframe using there respective id's}
+\end{figure}
 
-I started by removing any booking in the dataset that didn't have a total price or with a total price less than 1 as this meant the booking was not stored in the system correctly and may have been used for testing. 
+With all of the necessary data stored in the data warehouse I imported the relevant tables into a Jupiter Notebook to preform the data cleaning stages. My aim is to include only valid bookings that made it the whole way through the booking process and then separate into cancelled or not. I started by removing any booking in the dataset that didn't have a total price or with a total price less than 1 as this meant the booking was not stored in the system correctly and may have been used for testing. I then removed any booking that did not get to the terms accepted stage since this could not be treated as a cancellation or a booking as the customer process was not finished.
 
-I then removed any booking that did not get to the terms accepted stage since this could not be treated as a cancellation or a booking as the customer process was not finished.
+\begin{figure}[hbt!]
+ %\centering
+ \includegraphics[width=10cm]{figures/time_variables.png}
+ \caption{Section of Jupiter Notebook for data cleaning for creating features from the dataset by measuring the time taken to complete each stage of the booking process in the number of hours from the start date}
+\end{figure}
 
-\begin{itemize}
-\item include a screenshot of creating time features
-\end{itemize}
+Using the status time applied column to act as the first point where the booking process was started I created attributes used to store how long the customer took within each stage of the booking process as this may be able to indicate weather or not the user will cancel there booking.  \textbf{find a reference to support this}.
 
-
-Using the status time applied column to act as the first point where the booking process was started I created attributes used to store how long the customer took within each stage of the booking process as this may be able to indicate weather or not the user will cancel there booking.  \textbf{find a reference to support this}
+To account for the missing values in some of the categorical columns I use the pandas fill na method to replace the null values with Other  to prevent errors from occurring during the modeling stages when trying to handle null values.
 
 \section{Modeling}
 
-I used Azure ML Studio to evaluate and compare multiple different algorithms. ML studio is a cloud environment used to train, deploy, automate, manage and track ML models. It can be used for multiple different types of machine learning like supervised or unsupervised and deep learning. It gives the ability to write code in Python, R and its own no-code environment.  I used the cloud Jupiter notebook features for the data cleaning and preparation stages as well as testing models. To evaluate and compare multiple different algorithms I used the Automated ML feature on my cleaned dataset.
+I used Azure ML Studio to evaluate and compare multiple different algorithms. ML studio is a cloud environment used to train, deploy, automate, manage and track ML models. It can be used for multiple different types of machine learning like supervised or unsupervised and deep learning. It gives the ability to write code in Python, R and its own no-code environment.  I used the cloud Jupiter notebook features for the data cleaning and preparation stages as well as testing models. To evaluate and compare multiple different algorithms I used the Automated ML through its Python API on my cleaned dataset. Doing this meant I was able to test a large variation of regression algorithms.
+
+I used a train test split of 20 percent test size with the sklearn.model_selection library. why did I used 20 percent
+
+\begin{figure}[hbt!]
+ %\centering
+ \includegraphics[width=10cm]{figures/auto_ml_settings.png}
+ \caption{AutoML config settings for running classification algorithm}
+\end{figure}
+
+Running the algorithm is setup using the AutoMLConfig class in the Azure ML python SDK, the object contains all of the parameters used for configuring the experiment run. for a classification algorithm the task attribute is set to classification along with passing the training data and the target column label. Setting the number of cross validations to 15 means AutoML will run 15 different classifications on the training data outputting the results of each iteration. This output is then ranked by the selected primary metric which I have selected as norm macro recall, AzureML optimises models selected based on the primary metric. 
+
+Using the featurization auto setting allows Azure ML to automatically detect the column types and apply the optimal data preprocess techniques, for categorical data the One Hot encoding technique is applied to create a new variable for each stage of the categorical attribute represented as binary. The process of featurization is able to detect columns with high cardinality.  High cardinality means a attribute contains a large number of unique values, this was true for columns destination university, major and nationality this is an expected result as the dataset contains students from a large variety of university's and nationalities. The problem with this is when applying the One Hot encoding technique since each unique value increases the dimensionality of the feature matrix 
+
+After the config is setup it can be passed to the Experiment.submit class, In this case I used the local run configuration so the cloud resources were not consumed running many iterations of the classification model. As each model is generated its results are outputted to the screen
+
+Throughout the modeling process I tested a number of different settings configurations   
+
 
 \begin{itemize}
-\item splitting data into num and cat vars 
+\item generate test design
+\item build model 
+\item assess model
+\end{itemize}
+
+
+
+\begin{itemize}
 \item used SimpleImputer to replace missing num values with mean
 \item train test split of 0.2
 \item Azure ml - Azure machine learning studio [What is Azure Machine Learning | Microsoft Docs] is a cloud environment that can be used to both train and deploy machine learning models 
