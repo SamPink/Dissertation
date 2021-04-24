@@ -13,6 +13,7 @@ A contract made in advanced between the student (customer) and the company defin
 Having the ability to predict with some degree of certainty whether or not a booking is going to be cancelled would allow for more accurate decisions about revenue management to be made and overcome some of the risk created with contract based booking system. Doing this using machine learning means that overtime the accuracy of the predictions can increase with better understanding of the data, new iterations of modelling and evaluation of the actual outcome when compared with the predicted outcome. The ability for machine learning algorithm to make accurate predictions on a given outcome depends on the data available to it the amount of the data and the accuracy and usability of the data in, the case of booking management a lot of data is stored about each booking made. Meaning that it should be possible with the correct classification techniques to make accurate predictions on the outcome of the booking
 
 
+
 \subsection{Problem Statement}
 
 In total for the year 2020 to 2021, 25 percent of all 14363 bookings made where cancelled, this accounts for over 20 million pounds in revenue loss from customers who completed there booking then cancelled before the contract was payed. There are a number of different reasons that account for each booking being cancelled that range from impact caused due to COVID and students not receiving there target grades. In most of these cases the student will then chose to stay at different accommodation meaning the sale has been lost. Producing a model that is able to predict which of these bookings will be cancelled in real time would then allow the business to take actions to try and prevent the student from cancelling there booking. Being able to prevent just 10 percent of users from cancelling would therefore create a potential gain of 2 million in revenue per year.  
@@ -42,17 +43,11 @@ The aim is to integrate the classification model into the booking management sys
 
 
 \section{Solution approach}
-
-\begin{itemize}
-\item talk about the split of data in the training set, 75 percent of the training data contains bookings that are not cancelled and 25 percent cancelled 
-\end{itemize}
-
-
 To understand what the best way to approach the solution to the problem would be I started by working with employees in the company to gain a better understanding of what kind of results would be most effective and what are the actions that can be take to have the best chance of preventing a cancellation from being made at the level of an individual booking. It is important the results can be displayed in a way that is easy for employees to understand so that actions can be taken. I found that the best way to display the results of the model would be to create a table that ranked bookings by highest probability of cancellation. Another feature I found to be important is the ability to retrain the model on new data and adjust the hyper tuning parameters.
 
 To account for the multiple different stages involved in the Data Mining process I am going to be using the CRISP-DM model (\cite{WirthCRISP-DM:Mining}) to break down the problem into 6 specific stages \textbf{reference the figure}, these stages are business understanding, data understanding, data preparation, modeling, evaluation and deployment.
 
-According to current research, CRISP-DM is the most commonly used data-mining model due to its numerous advantages, which solved existing data-mining problems. 
+According to current research, CRISP-DM is the most commonly used data-mining model due to its numerous advantages, which solved existing data-mining problems. \textbf{reference} 
 
 
 \vspace{5mm}
@@ -71,8 +66,6 @@ In order for the solution of this problem to be useful, the solution method has 
 
 One of the problems that needed to be solve was how to get access to data that is suitable for machine learning. This aspect consistently requires more time as seen in previous literature (\textbf{reference).} To perform machine learning, data needs to be accessible in a suitable format and stored appropriately. The current booking system behind the dataset in this research does not store the data in a way that is suitable for use in machine learning. Building a data warehouse allows for the data to be converted into an appropriate format for machine learning problems. An important aspect involves the ability of the data warehouse to update upon new bookings and allow instant access to the data, a feature of the data warehouse using azure cloud which was used in this project. 
 
-The main technology used throughout the process will be Azure ML studio as a framework to encapsulate all of the tools needed to complete a machine learning project, it allows for direct connection to the database for accessing the data through integrated Jupiter Notebooks. Use of Jupiter Notebooks in Python provides an environment for all of the data cleaning and preparation stages that need to be performed entirely within the azure cloud. The modeling stages are done in the same way by importing the AzureML Python SDK into the Jupiter Notebook. The Experiment class (azureml.core.experiment.Experiment) in the SDK is used to store and run the models within a logical resource group with the ability to add and remove different modeling iterations form the experiment as well as viewing the results, when a model is configured through AutoMLConfig (azureml.train.automl.automlconfig.AutoMLConfig) it is then added to the experiment and the run is executed in the cloud. 
-
+The main technology used throughout the process will be Azure ML studio as a framework to encapsulate all of the tools needed to complete a machine learning project, it allows for direct connection to the database for accessing the data through integrated Jupiter Notebooks. Use of Jupiter Notebooks in Python provides an environment for all of the data cleaning and preparation stages that need to be performed entirely within the azure cloud. The modeling stages are done in the same way by importing the AzureML Python SDK into the Jupiter Notebook. The Experiment class (azureml.core.experiment.Experiment) in the SDK is used to store and run the models within a logical resource group with the ability to add and remove different modeling iterations form the experiment as well as viewing the results, when a model is configured through AutoMLConfig (azureml.train.automl.automlconfig.AutoMLConfig) it is then added to the experiment and the run is executed in the cloud. Doing this process in the cloud helps to solve the the GDPR related problems of data access as the data is never stored on the local computer.
 \begin{itemize}
-\item Doing this process in the cloud helps to solve the the GDPR related problem of data access as the data is never stored on the local computer 
 \end{itemize}
