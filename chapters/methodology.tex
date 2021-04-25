@@ -74,39 +74,34 @@ Figure 3.2 shows the features if the booking dataset.
 
 \section{Data Preparation}
 
-The dataset I have selected to be used for this research is a combination of 3 different tables from the external booking system, these include the booking table, student table and academic year id table. All of these tables have been combined using the data warehouse to create the DataFrame shown in \textbf{figure 3.7}. During the stage of feature selection I removed many of the attributes from these tables as I did not belive they would provide any value. Using a dataset with too many columns has to potential to result in over fitting and noise in the model, it is possible that the dataset I have selected can be reduced to a smaller number of features but I believe I have selected the best dataset available to me for completing this research. 
+The dataset I have selected to be used for this research is a combination of 3 different tables from the external booking system, these include the booking table, student table and academic year id table. All of these tables have been combined from the data warehouse to create the DataFrame shown in \textbf{figure 3.7}. During the stage of feature selection I removed many of the attributes from these tables as I did not believe they would provide any value. Using a dataset with too many columns has to potential to result in over fitting and noise in the model, it is possible that the dataset I have selected can be reduced to a smaller number of features but I believe I have selected the best dataset available to me for completing this research. 
 
-\begin{figure}[hbt!]
+\begin{figure}[H]
  %\centering
  \includegraphics[width=10cm]{figures/joining_tables.png}
  \caption{Section of Jupiter Notebook for data cleaning where I joined 3 sql tables into 1 dataframe using there respective id's}
 \end{figure}
 
-With all of the necessary data stored in the data warehouse I imported the relevant tables into a Jupiter Notebook to perform the data cleaning stages. My aim is to include only valid bookings that made it the whole way through the booking process and then separate into cancelled or not. I started by removing any booking in the dataset that didn't have a total price or with a total price less than 1 as this meant the booking was not stored in the system correctly and may have been used for testing. I then removed any booking that did not get to the terms accepted stage since this could not be treated as a cancellation or a booking as the customer process was not finished.
+With all of the necessary data stored in the data warehouse I imported the relevant tables into a Jupiter Notebook to perform the data cleaning stages. My aim is to include only valid bookings that made it the whole way through the booking process. I started by removing any booking in the dataset that didn't have a total price or with a total price less than 1 as this meant the booking was not stored in the system correctly and may have been used for testing. I then removed any booking that did not get to the terms accepted stage since this could not be treated as a cancellation or a booking as the customer process was not finished.
 
-\begin{figure}[hbt!]
+To account for the missing values in the categorical columns I use the pandas fill na method to replace the null values with 'Other'  to prevent errors from occurring during the modeling stages when trying to handle null values and to make it clear in the results when a missing value had been used.
+
+\begin{figure}[H]
  %\centering
  \includegraphics[width=10cm]{figures/time_variables.png}
  \caption{Section of Jupiter Notebook for data cleaning for feature engineering from the dataset by measuring the time taken to complete each stage of the booking process in the number of hours from the start date}
 \end{figure}
+Figure 3.5 shows the feature engineering I applied by using the status time applied column to act as the first point where the booking process was started. I created attributes used to store how long the customer took within each stage of the booking process as this describes the customers activity throughout the booking process, for example if a customer too only 1 hour to complete the booking process they may be less likely to cancel than one who too 2 days. 
 
-\begin{itemize}
-\item talk about imputing \textbf{DISCUSS FEATURE IMPORTANCE PERFORMED BY AZURE ML}
-\end{itemize}
+Using the featurization auto setting allows Auto ML to automatically detect the column types and apply the optimal data preprocess techniques, for categorical data the One Hot encoding technique is applied to create a new variable for each stage of the categorical attribute represented as binary. The process of featurization is able to detect columns with high cardinality.  High cardinality means a attribute contains a large number of unique values, this was true for columns destination university, major and nationality this is an expected result as the dataset contains students from a large variety of university's and nationalities. When a feature with high cardinality is detected by Auto ML it is automatically dropped from the dataset. 
 
-
-Using the featurization auto setting allows Azure ML to automatically detect the column types and apply the optimal data preprocess techniques, for categorical data the One Hot encoding technique is applied to create a new variable for each stage of the categorical attribute represented as binary. The process of featurization is able to detect columns with high cardinality.  High cardinality means a attribute contains a large number of unique values, this was true for columns destination university, major and nationality this is an expected result as the dataset contains students from a large variety of university's and nationalities. The problem with this is when applying the One Hot encoding technique each unique value increases the dimensionality of the feature matrix having the potential to result in model over fitting.
-
-
-Using the status time applied column to act as the first point where the booking process was started I created attributes used to store how long the customer took within each stage of the booking process as this may be able to indicate weather or not the user will cancel there booking.  \textbf{find a reference to support this}.
-
-To account for the missing values in some of the categorical columns I use the pandas fill na method to replace the null values with Other  to prevent errors from occurring during the modeling stages when trying to handle null values.
+To handle missing numeric values imputation is applied by the automatic featurization in Auto ML by replacing any missing values with the average of the column. Imputing missing values working best in columns with only a small proportion of missing values, this is why I have dropped all columns with a significant proportion of missing values before this stage.
 
 \section{Modeling}
 
 I used Azure ML Studio to evaluate and compare multiple different algorithms. ML studio is a cloud environment used to train, deploy, automate, manage and track ML models. It can be used for multiple different types of machine learning like supervised or unsupervised and deep learning. It gives the ability to write code in Python, R and its own no-code environment.  I used the cloud Jupiter notebook features for the data cleaning and preparation stages as well as testing models. To evaluate and compare multiple different algorithms I used Automated ML through its Python SDK on my cleaned dataset. Doing this meant I was able to test a large variation of regression algorithms.
 
-I used a train test split of 20 percent test size with the sklearn model selection library. why did I used 20 percent
+I used a train test split of 20 percent test size with the sklearn model selection library. 80 percent training data was used to ensure there was a sufficient amount of data to ensure good model accuracy. 
 
 \begin{figure}[hbt!]
  %\centering
@@ -114,22 +109,17 @@ I used a train test split of 20 percent test size with the sklearn model selecti
  \caption{AutoML config settings for running classification algorithm}
 \end{figure}
 
-Running the algorithm is setup using the AutoMLConfig class in the Azure ML python SDK, the object contains all of the parameters used for configuring the experiment run. for a classification algorithm the task attribute is set to classification along with passing the training data and the target column label. Setting the number of cross validations to 15 means AutoML will run 15 different classifications on the training data outputting the results of each iteration. This output is then ranked by the selected primary metric which I have selected as norm macro recall, AzureML optimises models selected based on the primary metric. 
+Running the algorithm is setup using the AutoMLConfig class in the Azure ML python SDK, the object contains all of the parameters used for configuring the experiment run. for a classification algorithm the task attribute is set to classification along with passing the training data and the target column label. Setting the number of cross validations to 15 means AutoML will run 15 different classifications on the training data outputting the results of each iteration. This output is then ranked by the selected primary metric which I have selected as norm macro recall, AutoML optimises models selected based on the primary metric. 
 
 After the configuration is setup it can be passed to the Experiment.submit class, In this case I used the local run configuration so the cloud resources were not consumed running many iterations of the classification model. As each model is generated its results are outputted to the screen
 
 \section{Evaluation}
 
-\begin{itemize}
-\item give a brief intro of evaluating the results
-\end{itemize}
-
+The mode results will be evaluated based on the number of bookings accurately predicted as going to cancel, as this is the metric that best satisfies the problem specification. A successful model will be one that can classify over 50 percent of cancelled booking accuracy. This relatively low target accuracy is used because this is the first research completed in this specific field and therefore being able to accurately predict over 50 percent of canceled bookings shows that it is in fact possible to use a classification algorithm in predicting if a booking is going to be cancelled. Evaluating the CRISP-DM methodology needs to be concerned with understanding how each of the individual stages contributed to solving the final business objective. In most machine learning projects data understanding and data preparation have the most overall impact with a relatively small amount of time being taken in the modeling stage \cite{Polyzotis2018DataSurvey}. Evaluating how changes in the data being inputted into the model affects its ability to accurately predict cancellations.
 
 \section{Deployment}
 
-\begin{itemize}
-\item intro of how this will be deployed using azure
-\end{itemize}
+The deployment of the model will be handled by AutoML by registering the final model into the Azure cloud allowing it to then be accessed through the Azure API and integrated into any web supported system. The deployment of the model into the cloud is not within the scope of this project.
 
 
 
