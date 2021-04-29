@@ -2,7 +2,7 @@
 \label{ch:method}
 
 \section{Data warehouse}
-To get the relevant data for solving this problem, the wider issue of developing a robust data warehouse had to be approached by building a dynamic data stream that could take data from an external source and store it in the company data warehouse so new iterations of the model could be run as new data came in. To facilitate the problem of having a dynamic data import stream, the python object relation mapping library was used since it has direct support for the python data library pandas . Doing this allows data to be read in any supported format and stored in a SQL database with the correct data types. The data needed is stored in an Amazon S3 bucket, so the python S3 library Boto3 was used to read TSV files from blob storage every hour and stored them in the data warehouse. This process was then deployed onto a docker container using the Azure cloud tool called Container Instances that enables docker containers to run as scheduled tasks. Docker containers are standardised units of software that contain all of the dependencies for running a specific program or script in a single executable package which can be run in the cloud or on a local machine.
+To obtain the necessary data for solving this problem, the larger issue of developing a reliable data warehouse had to be addressed by creating a dynamic data stream that could take data from an external source and store it in the company data warehouse, allowing new iterations of the model to be run as new data arrived. To facilitate the problem of having a dynamic data import stream, the python object relation mapping library was used since it has direct support for the python data library pandas . Doing this allows data to be read in any supported format and stored in a SQL database with the correct data types. The data needed is stored in an Amazon S3 bucket, so the python S3 library Boto3 was used to read TSV files from blob storage every hour and stored them in the data warehouse. This process was then deployed onto a docker container using the Azure cloud tool called Container Instances that enables docker containers to run as scheduled tasks. Docker containers are standardised units of software that contain all of the dependencies for running a specific program or script in a single executable package which can be run in the cloud or on a local machine.
 
 \section{CRISP-DM Methodology}
 
@@ -10,12 +10,12 @@ As previously mentioned, the CRISP-DM model (\cite{Wirth2000CRISP-DMMining}) is 
 
 \section{Business Understanding}
 
-This section asks what the company requires and hopes to gain from the process; in this case, the company requires a better understanding of which customers are most likely to cancel their reservations. This will help in not only preventing cancellations but also in gaining a better understanding of why cancellations occur. Understanding why bookings are being cancelled through the process of feature and model explanation is also important from a machine learning and business perspective, as this will help to understand what the best actions are to prevent cancellations.
+This section asks what the company requires and hopes to gain from the process; in this case, the company requires a better understanding of which customers are most likely to cancel their reservations. This will help in not only preventing cancellations but also in gaining a better understanding of why cancellations occur. Understanding why bookings are being cancelled through the process of feature and model explanation is also important from a machine learning and business perspective, as this will help to understand what the best actions are to prevent cancellations.
 
 \begin{figure}[H]
  \centering
  \includegraphics[width=10cm]{figures/bookings_by_property.png}
- \caption{Bar graph showing the total number of bookings made in the student accommodation industry for the 2020-2021 time period for each of the properties listed in this dataset. Properties are represented by their property IDs. A large variation in the number of customers per property can be seen, ranging from 796 to 3.
+ \caption{Bar graph showing the total number of bookings made in the student accommodation industry for the 2020-2021 time period for each of the properties listed in this dataset. Properties are represented by their property IDs. A large variation in the number of customers per property can be seen, ranging from 796 to 3.}
 \end{figure}
 
 
@@ -23,15 +23,15 @@ The dataset contains 45 properties in total, with the number of students at each
 
 \section{Data Understanding}
 
-The relevant booking data for this problem is created in an external system, which is the customer-facing website where each booking is taken. Customer information is stored in external website databases when a booking is made through the website. Personal information about the customer, such as name, address, date of birth, and phone number, is included in this data. As the customer progresses through the booking process, they will be directed to a page where they will be asked which university they will be attending and to select the property they wish to rent. The location of the property, the name of the room, the price, and any extras are all stored here. When a student chooses a room, they will be asked about the payment structure they prefer and how they plan to make their deposit. All of the relevant cost data is kept in this folder. In some cases, the fields for data entry in the booking system are not required, implying that the data will not be saved; in these cases, the value of the attribute is replaced with something else.
+The relevant booking data for this problem is created in an external system, which is the customer-facing website where each booking is taken. Customer information is stored in external website databases when a booking is made through the website. Personal information about the customer, such as name, address, date of birth, and phone number, is included in this data. As the customer progresses through the booking process; they will be directed to a page where they will be asked which university they will be attending and to select the property they wish to rent. The location of the property, the name of the room, the price, and any extras are all stored here. When a student chooses a room, they will be asked about the payment structure they prefer and how they plan to make their deposit. All of the relevant cost data is kept in this folder. In some cases, the fields for data entry in the booking system are not required, implying that the data will not be saved; in these cases, the value of the attribute is replaced with other.
 
 \vspace{5mm}
 
-The information stored during these stages of the booking describes all of the intellectual property stored about each individual customer, and it is this information that will be used to forecast the customer's activity and whether or not they will cancel their reservation. In the case of a classification problem, any attribute that influences the target variable is relevant. Since the goal of machine learning is to collect as much useful data as possible
+The information stored during these stages of the booking describes all of the intellectual property stored about each individual customer, and it is this information that will be used to forecast the customer's activity and whether or not they will cancel their reservation. In the case of a classification problem, any attribute that influences the target variable is relevant, since the goal of machine learning is to collect as much useful data as possible
 
 \vspace{5mm}
 
-In this case, only at data from the years 2020 to 2021 will be analysed since the historic data is incomplete. During this booking cycle there are a total of 14,363 bookings.
+In this case, only data from the years 2020 to 2021 will be analysed since the historic data is incomplete. During this booking cycle there are a total of 14,363 bookings.
 
 \begin{figure}[H]
  \centering
@@ -39,7 +39,7 @@ In this case, only at data from the years 2020 to 2021 will be analysed since th
  \caption{This diagram identifies all of the attributes in the student accommodation booking dataset within the pandas core Data Frame. Non-null indicates that all of the instances of the attributes have values. The data types for each attribute is indicated by the last column. }
 \end{figure}
 
-Figure 3.2 shows the features if the booking dataset:
+Figure 3.2 shows the features of the booking dataset:
 
 \begin{itemize}
     \item Property id is the unique identifier for the residence 
@@ -47,17 +47,17 @@ Figure 3.2 shows the features if the booking dataset:
     \item Room type name is the category of room selected
     \item Tenancy start date is the proposed start date of the contract
     \item Tenancy end date is the proposed end date of the contract
-    \item Tenancy length is the duration in day the contract is valid for
+    \item Tenancy length is the duration in days the contract is valid for
     \item Price per night is the daily rate at which the room will be sold
     \item Total price is the total price for the contracted time
     \item Status is the current status of the booking
     \item Status time applied is the time the booking process was started
-    \item Status time room selected is the time the customer selected there room
+    \item Status time room selected is the time the customer selected their room
     \item Status time selection completed is the time the customer finalised the selected process 
     \item Status time details completed is the time all personal details are entered
     \item Status time terms accepted is the time the agreement is completed
     \item Device is the type of the device the booking was made on
-    \item Created as is the time the process was started
+    \item Created at is the time the process was started
     \item Installment type is the payment schedule
     \item Is rebooker defines if the same customer has applied before
     \item Date of birth of the customer
@@ -74,15 +74,15 @@ Figure 3.2 shows the features if the booking dataset:
 
 \section{Data Preparation}
 
-The dataset selected to be used for this research is a combination of 3 different tables from the external booking system, these include the booking table, student table and academic year ID table. All of these tables have been combined from the data warehouse to create the Data Frame shown in Figure 3.2. During the stage of feature selection many of the attributes have been removed from these tables as they did not provide any value and did not contain good data quality. Using a dataset with too many columns has the potential to result in over fitting and noise in the model, it is possible that the dataset selected can be reduced to a smaller number of features but the best dataset available has been selected for completing this research. 
+The dataset selected to be used for this research is a combination of 3 different tables from the external booking system, these include the booking table, student table and academic year ID table. All of these tables have been combined from the data warehouse to create the Data Frame shown in Figure 3.2. During the stage of feature selection many of the attributes have been removed from these tables as they did not provide any value and did not contain good data quality. Using a dataset with too many columns has the potential to result in over fitting and noise in the model; it is possible that the dataset selected can be reduced to a smaller number of features but the best dataset available has been selected for completing this research. 
 
 \begin{figure}[H]
  \centering
- \includegraphics[width=10cm]{figures/joining_tables.png}
+ \includegraphics[width=15cm]{figures/joining_tables.png}
  \caption{This shows the stage of data preparation from a section of Jupiter Notebook, used for student accommodation data cleaning, where  3 SQL tables were joined into one data frame using their respective ID's}
 \end{figure}
 
-With all of the necessary data stored in the data warehouse, the relevant tables were combined and imported into a Jupiter Notebook to perform the data cleaning stages (Figure 3.3). The aim is to include only valid bookings that made it the whole way through the booking process. Initially, any booking in the dataset that didn't have a total price or with a total price less than one were removed as this meant the booking was not stored in the system correctly and may have been used for testing. Then, any booking that did not get to the terms accepted stage was removed since this could not be treated as a cancellation or a booking as the customer process was not finished.
+With all of the necessary data stored in the data warehouse, the relevant tables were combined and imported into a Jupiter Notebook to perform the data cleaning stages (Figure 3.3). The aim is to include only valid bookings that made it the whole way through the booking process. Initially, any booking in the dataset that didn't have a total price or with a total price less than one was removed as this meant the booking was not stored in the system correctly and may have been used for testing. Then, any booking that did not get to the terms accepted stage was removed since this could not be treated as a cancellation or a booking as the customer process was not finished.
 
 \vspace{5mm}
 
@@ -90,14 +90,14 @@ To account for the missing values in the categorical columns, the pandas fill na
 
 \begin{figure}[H]
  \centering
- \includegraphics[width=10cm]{figures/time_variables.png}
+ \includegraphics[width=15cm]{figures/time_variables.png}
  \caption{This shows a section of the Jupiter Notebook used for feature engineering the student accommodation dataset by measuring the time taken to complete each stage of the booking process in the number of hours from the status time applied.}
 \end{figure}
-Figure 3.4 shows the feature engineering applied by using the status time applied column to act as the first point where the booking process was started. The attributes were created to store how long the customer took within each stage of the booking process as this describes the customers activity throughout the booking process, for example if a customer took only 1 hour to complete the booking process they may be less likely to cancel than one who took 2 days. 
+Figure 3.4 shows the feature engineering applied by using the status time applied column to act as the first point where the booking process was started. The attributes were created to store how long the customer took within each stage of the booking process as this describes the customer's activity throughout the booking process, for example if a customer took only 1 hour to complete the booking process they may be less likely to cancel than one who took 2 days. 
 
 \vspace{5mm}
 
-Using the featurization auto setting allows Auto ML to automatically detect the column types and apply the optimal data preprocess techniques, for categorical data the One Hot encoding technique is applied to create a new variable for each stage of the categorical attribute represented as binary. The process of featurization is able to detect columns with high cardinality.  High cardinality means an attribute contains a large number of unique values, this was true for columns destination university, major and nationality. This is an expected result as the dataset contains students from a large variety of universities and nationalities. When a feature with high cardinality is detected by Auto ML it is automatically dropped from the dataset. 
+Using the featurization auto setting allows Auto ML to automatically detect the column types and apply the optimal data preprocess techniques; for categorical data the One Hot encoding technique is applied to create a new variable for each stage of the categorical attribute represented as binary. The process of featurization is able to detect columns with high cardinality. High cardinality means an attribute contains a large number of unique values; this was true for columns destination university, major and nationality. This is an expected result as the dataset contains students from a large variety of universities and nationalities. When a feature with high cardinality is detected by Auto ML it is automatically dropped from the dataset. 
 
 \vspace{5mm}
 
@@ -105,7 +105,7 @@ To handle missing numeric values, imputation is applied by the automatic featuri
 
 \section{Modeling}
 
-Auto ML Studio was used to evaluate and compare multiple different algorithms. Auto ML studio is a cloud environment used to train, deploy, automate, manage and track Auto ML models. It can be used for multiple different types of machine learning like supervised or unsupervised and deep learning. It gives the ability to write code in Python, R and its own no-code environment.  The cloud Jupiter notebook features were used for the data cleaning and preparation stages as well as testing models. To evaluate and compare multiple different algorithms, Auto ML was used to clean the dataset through its Python SDK. Doing this meant a large variation of regression algorithms were able to be tested.
+Auto ML Studio was used to evaluate and compare multiple different algorithms. Auto ML studio is a cloud environment used to train, deploy, automate, manage and track Auto ML models. It can be used for multiple different types of machine learning like supervised or unsupervised and deep learning. It gives the ability to write code in Python, R and its own no-code environment.  The cloud Jupiter notebook features were used for the data cleaning and preparation stages as well as testing models. To evaluate and compare multiple different algorithms, Auto ML was used through its Python SDK. Doing this meant a large variation of regression algorithms were able to be tested.
 
 \vspace{5mm}
 
@@ -113,7 +113,7 @@ A train test split of 20 percent test size  was used with the sklearn model sele
 
 \begin{figure}[H]
  \centering
- \includegraphics[width=10cm]{figures/auto_ml_settings.png}
+ \includegraphics[width=15cm]{figures/auto_ml_settings.png}
  \caption{This illustrates the final AutoML configuration settings used for running the classification algorithm on the student accommodation dataset.}
 \end{figure}
 
@@ -125,7 +125,7 @@ After the configuration is setup it can be passed to the Experiment.submit class
 
 \section{Evaluation}
 
-The model results will be evaluated based on the number of bookings accurately predicted as going to cancel, as this is the metric that best satisfies the problem specification. A successful model will be one that can classify over 50 percent of cancelled booking accuracy. This relatively low target accuracy is used because this is the first research completed in this specific field and therefore being able to accurately predict over 50 percent of cancelled bookings shows that it is in fact possible to use a classification algorithm in predicting if a booking is going to be cancelled. Evaluating the CRISP-DM methodology needs to be concerned with understanding how each of the individual stages contributed to solving the final business objective. In most machine learning projects data understanding and data preparation have the most overall impact with a relatively small amount of time being taken in the modeling stage \cite{Polyzotis2018DataSurvey}. Evaluating how changes in the data being inputted into the model affects its ability to accurately predict cancellations.
+The model results will be evaluated based on the number of bookings accurately predicted as going to cancel, as this is the metric that best satisfies the problem specification. A successful model will be one that can classify over 50 percent of cancelled bookings accuracy. This relatively low target accuracy is used because this is the first research completed in this specific field and therefore being able to accurately predict over 50 percent of cancelled bookings shows that it is in fact possible to use a classification algorithm in predicting if a booking is going to be cancelled. Evaluating the CRISP-DM methodology needs to be concerned with understanding how each of the individual stages contributed to solving the final business objective. In most machine learning projects data understanding and data preparation have the most overall impact with a relatively small amount of time being taken in the modeling stage \cite{Polyzotis2018DataSurvey}. Evaluating how changes in the data being inputted into the model affects its ability to accurately predict cancellations.
 
 \section{Deployment}
 

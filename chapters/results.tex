@@ -1,11 +1,12 @@
 \chapter{Results}
 \label{ch:results}
 
-This project uses a machine learning model with sklearn and Auto ML to classify bookings from a dataset in the student accommodation industry as either cancelled or not cancelled. The goal of this research is to create a prediction for each booking on if it will be cancelled, allowing data-driven decisions to be made in the hopes of reducing cancellations.
+This project uses a machine learning model with sklearn and Auto ML to classify bookings from a dataset in the student accommodation industry as either cancelled or not cancelled. The goal of this study is to develop a prediction for each booking as to whether it will be cancelled, allowing for data-driven decisions in the hopes of reducing cancellations.
 \section{Exploratory data analysis}
+
  \begin{figure}[H]
  \centering
- \includegraphics[width=7cm]{figures/price_per_night.png}
+ \includegraphics[width=10cm]{figures/price_per_night.png}
  \caption{A violin plot illustrating the distribution of price per night for student accommodation bookings, comparing cancelled and non cancelled bookings. False (blue) represents non-cancelled and True (orange)  represents cancelled bookings.}
 \end{figure}
   
@@ -14,11 +15,11 @@ This project uses a machine learning model with sklearn and Auto ML to classify 
  
  \begin{figure}[H]
  \centering
-\includegraphics[width=7cm]{figures/yos.png}
+\includegraphics[width=10cm]{figures/yos.png}
  \caption{A bar graph showing the relative frequencies of the unique values as a percentage of booking cancellations in the student accommodation industry. Data is plotted by degree year of study with the blue horizontal line representing the mean cancellations.}
 \end{figure}
   
-Figure 4.2 shows percentage of booking cancellations grouped by academic year of study. This shows sixth years as having 40 percent cancellations, this many be due to the fact they are more likely to decide to live in private accommodation but it is unlikely this accounts for them being almost twice as likely to cancel than the average. The Other category is also an outlier here with an almost 40 percent chance of cancelling, more research would be needed to understand exactly why customers who do not enter a year of study are more likely to cancel but it is clear from this figure that year of study will be a good indicator of cancellations.
+Figure 4.2 shows percentage of booking cancellations grouped by academic year of study. This shows sixth years as having 40 percent cancellations, this may be due to the fact they are more likely to decide to live in private accommodation but it is unlikely this accounts for them being almost twice as likely to cancel than the average. The Other category is also an outlier here with a 27 percent chance of cancelling, more research would be needed to understand exactly why customers who do not enter a year of study are more likely to cancel but it is clear from this figure that year of study will be a good indicator of cancellations.
 
 \vspace{5mm}
   
@@ -34,25 +35,15 @@ Figure 4.2 shows percentage of booking cancellations grouped by academic year of
   
    \begin{figure}[H]
  \centering
-\includegraphics[width=7cm]{figures/is_rebooker.png}
+\includegraphics[width=10cm]{figures/is_rebooker.png}
  \caption{A bar graph illustrating the relative frequencies of the unique values as a percentage of booking cancellations for a rebooker, someone who has booked before. 0 (blue) represents a individual who has not booked before, 1(orange) represents someone who has.}
 \end{figure}
   
-In comparison to cancellations with students who are rebookers (have booked before), we can see that students who have booked previously are around half as likely to cancel their bookings. This is another good predictor of cancellations.  
+Figure 4.4 shows the comparison of cancellations between students who are rebookers (have booked before) and those who are not. We can see that students who have not booked previously are 16 percent more likely to cancel their bookings. This is another good predictor of cancellations.  
  
  \section{Original Model - XGBoost}
 
-XGBoost is a distributed gradient boosting library that has been optimised for performance, flexibility, and portability \cite{Chen2016XGBoost:System}. It uses the Gradient Boosting framework to implement machine learning algorithms. XGBoost is a parallel tree boosting algorithm that solves a variety of data science problems quickly and accurately. XGBoost is commonly used by data scientists to produce cutting-edge performance on a variety of machine learning problems. Various interfaces are supported by XGBoost, including the python interface. The implementation of XGBoost focuses on computational speed, model performance and memory resources.The most critical element in XGBoost's performance is its scalability in all situations. On a single machine, the device is more than ten times faster than current common solutions, and it scales to billions of examples in distributed or memory-limited environments\cite{ChenXGBoost:System}.
-
- \begin{figure}[H]
- \centering
-\includegraphics[width=10cm]{figures/xg_boost_code.png}
- \caption{The original code used for running the XGBoost model. A test size of 20 percent was used and the XGBoost classifier was created and then fit to the training data. Prediction shows 82 percent accuracy overall on the test data.}
-\end{figure}
-
-The original methodology included using Python to run XGBoost, Figure 4.5 shows a snippet of the code used to train the model with a train test split set to 20 percent. The model was created on the test data and the accuracy score was calculated. The model was run using the default hyper parameters, sklearn. Initially, the accuracy score of 82 percent appeared to solve the problem specification. However, the confusion matrix shown in Figure 4.6 identified that there is a large number of false positive predictions compared with the number of true positive predictions, showing that the models recall is low compared to the accuracy. As recall identifies the number of true positives, correct cancellations, a low recall score is undesirable.
-
- \begin{figure}[H]
+\begin{figure}[H]
  \centering
   \begin{subfigure}{A\textwidth}
     \includegraphics[width=10cm]{figures/python_xgboost.png}
@@ -61,13 +52,26 @@ The original methodology included using Python to run XGBoost, Figure 4.5 shows 
   \centering
   \begin{subfigure}{B\textwidth}
     \includegraphics[width=10cm]{figures/python_recall}
-    \caption{\textbf{These tables illustrate the original XGBoosts methods results.}\vspace{2mm} \\ A= The confusion matrix produced from the student accommodation booking data. False False: a non cancelled booking correctly predicted, False True: booking predicted as not cancelled but actually cancelled. True True: predicted as cancelled and actually cancelled and True False: predicted as cancelled but not actually cancelled.\vspace{2mm} \\B= A table illustrating the accuracy, precision and recall of the XGBoost method.} \label{fig:1b}
+    \caption{\textbf{These tables illustrate the original XGBoosts methods results.}\vspace{2mm} \\ A = The confusion matrix produced from the student accommodation booking data. False False: a non cancelled booking correctly predicted, False True: booking predicted as not cancelled but actually cancelled. True True: predicted as cancelled and actually cancelled and True False: predicted as cancelled but not actually cancelled.\vspace{2mm} \\B = A table illustrating the accuracy, precision and recall of the XGBoost method as a percentage.} \label{fig:1b}
   \end{subfigure}
 \end{figure}
 
+The confusion matrix in Figure 4.5 is a table that displays the performance of a classification model on a set of test data where the true values are known. The 4 sections that make up a confusion matrix are, true positives (TP) these are bookings that the model predicted as cancelled and are actually cancelled. True negatives (TN) these are bookings predicted correctly as not cancelled. False positives (FP) are bookings that the model predicted as cancelled but did not and False negatives (FN) these are bookings the model predicted as not cancelled but did cancel. TP is the most important because this is where the model has predicted a booking as going  to cancel and has actually cancelled which is the objective of this research.
 
+\vspace{5mm}
 
-A confusion matrix is a table that shows how well a classification model performs on a collection of test data for which the true values are known. The 4 sections that make up a confusion matrix are, true positives (TP) these are bookings that the model predicted as cancelled and are actually cancelled. True negatives (TN) these are bookings predicted correctly as not cancelled. False positives (FP) are bookings that the model predicted as cancelled but did not and False negatives (FN) these are bookings the model predicted as not cancelled but did cancel. TP is the most important because this is where the model has predicted a booking as going  to cancel and has actually cancelled which is the objective of this research.
+The accuracy of a classification model is (TP+TN)/total. This is the number of bookings accurately classified as either cancelled or not cancelled. In this case it is more valuable to classify TP than TN since cancelled bookings are the focus of this research. Recall is TP / (TP + FN), this is the proportion of actual positive values predicted correctly.
+
+\vspace{5mm}
+
+ \begin{figure}[H]
+ \centering
+\includegraphics[width=10cm]{figures/xg_boost_code.png}
+ \caption{The original code used for running the XGBoost model. A test size of 20 percent was used and the XGBoost classifier was created and then fit to the training data. Prediction shows 82 percent accuracy overall on the test data.}
+\end{figure}
+
+The original methodology included using Python to run XGBoost, Figure 4.6 shows a snippet of the code used to train the model with a train test split set to 20 percent. The model was created on the test data and the accuracy score was calculated. The model was run using the default hyper parameters, in sklearn. Initially, the accuracy score of 82 percent appeared to solve the problem specification. However, the confusion matrix shown in Figure 4.6 identified that there is a large number of false positive predictions compared with the number of true positive predictions, showing that the models recall is low compared to the accuracy. As recall identifies the number of true positives, correct cancellations, a low recall score is undesirable.
+
 
 After running this model and identifying poor recall, an alternative model and Hyperparameter optimization needed to be identified to produce increase recall. Using Auto ML, different algorithms were tested to enable the best algorithm to be identified. 
 
@@ -88,11 +92,12 @@ Since Auto ML is automated, it allows for more effective testing and evaluation 
   \end{subfigure}
 \end{figure}
 
-The accuracy of a classification model is (TP+TN)/total. This is the number of bookings accurately classified as either cancelled or not cancelled. In this case it is more valuable to classify TP than TN since cancelled bookings are the focus of this research. Figure 4.7 shows  0.93TF 0.56TP gives an overall accuracy of 0.83, this appears to be a very good result with over 80 percent of the bookings accurately predicted.
-
-Recall is TP / (TP + FN), this is the proportion of actual positive values predicted correctly Figure 4.7 showing only 53 percent of true positive values are identified correctly in the first run of Auto ML. This shows that accuracy is not the most important metric here since even with a good accuracy score, the recall score is very low, with few true positive values predicted, the original problem statement has not been solved. 
+Figure 4.7 shows  0.93TF 0.56TP gives an overall accuracy of 0.83, this is inline with the results of running XGBoost manually outside of Auto ML. Figure 4.7 also shows only 53 percent of true positive values are identified correctly in the first run of Auto ML. This is only slightly better than the results of the original XGBoost model, with a high accuracy and low recall the original problem statement has not been solved. 
 
 \section{Auto ML- Stack Ensemble}
+Stack Ensemble learns how to merge predictions using a meta-learning algorithm from two or more base machine learning algorithms. The benefit of the stack is the fact that a variety of high performance models incorporate the capabilities to predict that any single model in the ensemble is superior to one classification. This is made up from 2 or more base models and a meta model that combines the predictions of the base models.
+
+\vspace{5mm}
 
 Knowing that recall should be the primary metric to target and not accuracy, using Auto ML, the target metric was changed to recall. Figure 3.5 shows the settings applied with the new primary metric being normalized macro recall. Setting the primary metric means Auto ML can optimise the model selection based on recall.
 
@@ -102,7 +107,7 @@ Knowing that recall should be the primary metric to target and not accuracy, usi
  \caption{A table outlining the different algorithms used for the final run of Auto ML and the scaler used on the student accommodation booking data. Models were ranked by their recall (norm macro recall).}
 \end{figure}
 
-During this run Auto ML was used to evaluate and compare multiple different algorithms knowing that the algorithm with the best recall needed to be used, Auto ML was run again keeping all other values the same, and only changing the primary metric. Auto ML performs 15 different cross-validations on the data set, ranking them by the target attribute, recall (Figure 4.8). The same dataset and train test split were used but the target metric changed to recall,  meaning the model evaluates and ranks the results differently.
+During this run Auto ML was used to evaluate and compare multiple different algorithms knowing that the algorithm with the best recall needed to be used, Auto ML was run again keeping all other values the same, and only changing the primary metric. Auto ML performs 15 different cross-validations on the data set, ranking them by the target attribute, recall (Figure 4.8). The same dataset and train test split were used,  meaning the model evaluates and ranks the results differently.
 
 \begin{figure}[H]
  \centering
@@ -113,23 +118,23 @@ During this run Auto ML was used to evaluate and compare multiple different algo
   \centering
   \begin{subfigure}{B\textwidth}
     \includegraphics[width=10cm]{figures/final_recall.png}
-    \caption{\textbf{These tables illustrate the final Auto ML, Stack Ensemble model results.}\vspace{2mm} \\ A= The confusion matrix produced from the student accommodation booking data presenting as normalized. False False: a non cancelled booking correctly predicted, False True: booking predicted as not cancelled but actually cancelled. True True: predicted as cancelled and actually cancelled and True False: predicted as cancelled but not actually cancelled. \vspace{2mm} \\B= A table illustrating the accuracy, precision and recall of the final Auto ML, Stack Ensemble method.} \label{fig:1b}
+    \caption{\textbf{These tables illustrate the final Auto ML, Stack Ensemble model results.}\vspace{2mm} \\ A = The confusion matrix produced from the student accommodation booking data presented as normalized. False False: a non cancelled booking correctly predicted, False True: booking predicted as not cancelled but actually cancelled. True True: predicted as cancelled and actually cancelled and True False: predicted as cancelled but not actually cancelled. \vspace{2mm} \\B = A table illustrating the accuracy, precision and recall of the final Auto ML, Stack Ensemble method.} \label{fig:1b}
   \end{subfigure}
 \end{figure}
 
-The confusion matrix in Figure 4.9 shows a significant improvement when compared to the confusion matrix in Figure 4.6. This outlines the benefit of using the Stack Ensemble algorithm compared to XGBoost. Stack Ensemble learns how to integrate the predictions from two or more base machine learning algorithms using a meta-learning algorithm. The advantage of stacking is that it can combine the capabilities of a number of high-performing models to make predictions that outperform any single model in the ensemble on a classification. This is made up from 2 or more base models and a meta model that combines the predictions of the base models.
+The confusion matrix in Figure 4.9 shows a significant improvement in recall when compared to the confusion matrix in Figure 4.6. This outlines the benefit of using the Stack Ensemble algorithm compared to XGBoost. 
 
 \vspace{5mm}
 
-In comparison to Figure 4.6, the final confusion matrix has a lower overall accuracy score but a higher recall score. There is a trade-off between having a high accuracy and a high recall score. However, as the recall is a representation of the true predicted cancellations, a higher recall score is more desirable. The final model had a recall score of 71 percent (Figure 4.9) which is around 20 percent higher than the original model. 
+In comparison to Figure 4.6, the final confusion matrix has a lower overall accuracy score but a higher recall score. The recall is a representation of the true predicted cancellations, a higher recall score is more desirable. The final model had a recall score of 71 percent (Figure 4.9) which is 18 percent higher than the original model. 
 
 \begin{figure}[H]
  \centering
  \includegraphics[width=10cm]{figures/feature_importance.png}
- \caption{A bar graph showing the feature importance of the final Auto ML model, ranking the features by their importance. }
+ \caption{A bar graph showing the feature importance of the final Auto ML model, ordered from high to low. }
 \end{figure}
 
-Based on the results from the feature importance graph in Figure 4.10, the main dependent feature on cancellations was total price This was consistent with the feature exploration graph in Figure 4.1 which indicated price per night to be the most important feature. However, the rest of the features indicated in the exploratory data analysis were not present in the feature importance graph in Figure 4.10. The majority of the features in the feature importance graph were based on numerical data, such as hours to end or start date. 
+Based on the results from the feature importance graph in Figure 4.10, the main dependent feature on cancellations was total price, this was consistent with the feature exploration graph in Figure 4.1 which indicated price per night to be the most important feature. However, the rest of the features indicated in the exploratory data analysis were not present in the feature importance graph in Figure 4.10. The majority of the features in the feature importance graph were based on numerical data, such as hours to start or end date. 
 
 
 \begin{figure}[H]
@@ -137,7 +142,7 @@ Based on the results from the feature importance graph in Figure 4.10, the main 
  \includegraphics[width=10cm]{figures/canc_prob.png}
  \caption{A table of prediction probabilities, ranking each of the bookings made by their chance of cancellation, using the Stack Ensemble model on the student accommodation data. Property ID represents the unique property. True represents the chance of the booking being cancelled.}
 \end{figure}
-All of the bookings in the test data are ranked between 0 and 1, a booking over 0.5 gets classified as cancelled. The prediction probability was calculated using the Stack Ensemble model and is able to rank bookings made by the chance of them being cancelled. The implementation of the predictions into the booking management system is indicated in Figure 4.11, illustrating that the problem statement has been solved and incorporated in a useful way. 
+All of the bookings in the test data are ranked between 0 and 1, a booking over 0.5 gets classified as cancelled. The prediction probability was calculated using the Stack Ensemble model and is able to rank bookings made by the chance of them being cancelled.
 
 
 

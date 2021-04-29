@@ -1,18 +1,21 @@
 \chapter{Literature Review}
 \label{ch:lit_rev}
+
+\section{Business Perspective}
+
 Revenue management is defined as “the application of information systems and pricing strategies to allocate the right capacity to the right customer at the right price at the right time” \cite{Kimes2003HasAcceptable}. This is essential to a company selling a fixed number of rooms, setting the price too high would result in customers moving to competitors and cause reduced profits as well as a poor customer experience. Setting the price too low however may result in maximum occupancy but will trade this for potential losses in overall profits.
 
 \vspace{5mm}
 
-Booking cancellations are one of the main focuses in the revenue management industry as a whole \cite{Subramanian1999AirlineNo-shows}. Since a trade-off needs to be made between implementing a ridged cancellation policy that imposes penalties on cancellation, and a policy that has no impact to the customer. \cite{Jinhong2007ServiceCancellations} shows that implementing a ridged cancellation policy can act as a sales inhibitor and therefore reduce the number of customers. This however further increases the uncertainty as there is little impact to customers cancelling bookings. \cite{Talluri2004TheManagement} finds that in some cases customers looking for the best price will make multiple bookings and then cancel all but one. 
+Booking cancellations are one of the main focuses in the revenue management industry as a whole \cite{Subramanian1999AirlineNo-shows}. Since a trade-off needs to be made between implementing a ridged cancellation policy that imposes penalties on cancellation, and a policy that has no impact to the customer. \cite{Jinhong2007ServiceCancellations} shows that implementing a rigid cancellation policy can act as a sales inhibitor and therefore reduce the number of customers. This however further increases the uncertainty as there is little impact to customers cancelling bookings. \cite{Talluri2004TheManagement} finds that in some cases customers looking for the best price will make multiple bookings and then cancel all but one. 
 
 \vspace{5mm}
 
-Looking at this problem specifically in the student accommodation industry, more focus needs to be directed towards capacity and price, this is unlike the hotel industry which deals more with short term stays. In the student accommodation the mean stay is 247 days and once the room is sold it is set at this fixed price for the duration of the academic year.
+Looking at this problem specifically in the student accommodation industry, more focus needs to be directed towards capacity and price, this is unlike the hotel industry which deals more with short term stays. In the student accommodation data used for this research the mean stay is 247 days and once the room is sold it is set at this fixed price for the duration of the academic year.
 
  \vspace{5mm}
  
-Demand forecasting is one of five revenue management issues; the others are pricing, auctions, capacity management, and overbooking\cite{Chiang2007AnResearch}. Development of a booking cancellation prediction model is in accordance to what was recognized by \cite{Chiang2007AnResearch} that revenue management should make use of mathematical and forecast models to take better advantage of the available data and technology.
+Demand forecasting is one of five revenue management issues; the others are pricing, auctions, capacity management, and overbooking. The development of a booking cancellation prediction model follows \cite{Chiang2007AnResearch} recommendation that sales management should use statistical and projection models to best use available data and technologies.
  
 \vspace{5mm}
 
@@ -20,17 +23,27 @@ As mentioned by \cite{RevenueWorldCat.org} and \cite{Weatherford2003AManagement}
 
 \vspace{5mm}
 
-Using machine learning to forecast bookings can be separated into two specific types of problems, regression problems where the aim is to predict a continuous quantitative value like the sum of bookings that will be cancelled in a given year, and classification where each booking can be classified into two groups, cancelled or not cancelled. Most of the research in this field is focused on solving it as a regression problem with  \cite{RomeroMorales2010ForecastingMining} stating “it is hard to imagine that one can predict whether a booking will be cancelled or not with high accuracy simply by looking at Passenger Name Record (PNR) information”. PNR data does not store the same number of data points that is possible with property management system data, it's a 'file' in the system's database that contains information about a passenger (or a group of passengers travelling together) and their travel plans (flight itinerary, hotel booking segments, car rental bookings, etc.).
-
-\vspace{5mm}
-
-Taking advantage of what was recognized by \cite{Talluri2004TheManagement} that “science and technology now make it possible to manage demand on a scale and complexity that would be unthinkable through manual means”.  This study aims to use the tools now available in the field of machine learning and the increased number of data points on each customer to approach the prediction of cancellations as a classification problem.   
-
-This backs up "Demand-based pricing is underused in many service industries" \cite{Kimes2003HasAcceptable} implying that a limited number of industries have properly taken advantage of new technology available in the field of machine learning.
+Using what was identified by \cite{Talluri2004TheManagement} that “science and technology now make it possible to manage demand on a scale and complexity that would be unthinkable through manual means”; this study aims to use the tools now available in the field of machine learning and the increased number of data points on each customer to approach the prediction of cancellations as a classification problem. This backs up "Demand-based pricing is underused in many service industries" \cite{Kimes2003HasAcceptable} implying that a limited number of industries have properly taken advantage of new technology available in the field of machine learning.
 
 \vspace{5mm}
 
 \cite{Newell2018TheSector} stated "Amongst the alternative property sectors, student accommodation has recently become an important institutionalised property sector". In the UK alone the student accommodation industry is worth around 60 Billion \cite{UKWakefield} with an increase of 14 percent over the last 5 years \cite{UKWakefield}. Despite this, there is no research in the field of forecasting or analysing demand. With the recent impact of COVID-19 causing a large number of students to have to study from home and in some cases no longer needing student accommodation it is more important than ever to have the ability to accurately forecast the demand. 
+
+\section{Choice of algorithm}
+
+Machine Learning algorithms use statistics to find correlations for large quantities of data, if data can be processed in digital form and fed into a machine learning algorithm.\cite{Chen2019MehryarEdition}. Machine learning algorithms make use of data to increase accuracy and to simulate accurately. Teaching a system can be much simpler than manually programming by showing samples of desired input behaviour in anticipation of the requested answer with all potential inputs.\cite{Jordan2015MachineProspects}. 
+
+\vspace{5mm}
+
+Using machine learning to forecast bookings can be separated into two specific types of problems, regression problems where the aim is to predict a continuous quantitative value like the sum of bookings that will be cancelled in a given year, and classification where each booking can be classified into two groups: cancelled or not cancelled. Most of the research in this field is focused on solving it as a regression problem with  \cite{RomeroMorales2010ForecastingMining} stating “it is hard to imagine that one can predict whether a booking will be cancelled or not with high accuracy simply by looking at Passenger Name Record (PNR) information”. PNR data does not store the same number of data points as property management system data, it is a file containing information about a passenger (or a travelling group) and their travel plans in the system's database.
+
+\vspace{5mm}
+
+XGBoost is a distributed gradient boosting library that has been optimised for performance, flexibility, and portability \cite{Chen2016XGBoost:System}. It uses the Gradient Boosting framework to implement machine learning algorithms. XGBoost is a parallel tree boosting algorithm that solves a variety of data science problems quickly and accurately. XGBoost is commonly used by data scientists to produce cutting-edge performance on a variety of machine learning problems. Various interfaces are supported by XGBoost, including the Python interface. The implementation of XGBoost focuses on computational speed, model performance and memory resources.The most critical element in XGBoost's performance is its scalability in all situations. On a single machine, the device is more than ten times faster than current common solutions, and it scales to billions of examples in distributed or memory-limited environments \cite{ChenXGBoost:System}.
+
+\vspace{5mm}
+
+At its most basic level, decision tree analysis is a strategy for classification that can be used to identify and remove important features and patterns from databases to allow for discrimination and modelling predictions. These characteristics, combined with their intuitive interpretation, explain why decision trees have been widely used for over two decades in exploratory data analysis and predictive modelling applications \cite{Myles2004AnModeling}. Due to its efficiency, accuracy, and interpretability, gradient boosting decision trees (GBDT) are a widely used machine learning algorithm. GBDT outperforms the competition in a variety of machine learning tasks. With the advent of big data in recent years, GBDT has encountered new challenges, most notably in the accuracy-efficiency trade-off \cite{KeLightGBM:Tree}.
 
 \section{Summary}
 
